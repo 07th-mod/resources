@@ -4,31 +4,24 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 
-call :colorEcho a0 "Downloading graphics patch..."
-echo.
-call :colorEcho 0a "Sometimes you won't get a download ETA or file size, but the download will be completed normally"
+call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CG.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CG.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CGAlt.zip
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading voice patch..."
+call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-Voices.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-Voices.zip
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading MangaGamer sprites patch..."
+call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true https://github.com/07th-mod/resources/releases/download/Nipah/Onikakushi-CGAlt.zip
-timeout /t 1 > nul
-
-call :colorEcho a0 "Downloading patch..."
-echo.
-timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true https://github.com/07th-mod/onikakushi/releases/download/v4.0.0/Onikakushi.Voice.and.Graphics.Patch.v4.0.0.zip
-.\aria2c.exe --file-allocation=none --continue=true https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/onikakushi/releases/download/v4.0.0/Onikakushi.Voice.and.Graphics.Patch.v4.0.0.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Extracting files..."
@@ -45,7 +38,6 @@ timeout /t 1 > nul
 
 call :colorEcho a0 "Moving folders..."
 echo.
-
 echo D | xcopy /E /Y .\Managed ..\Managed > nul
 echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt > nul
 echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG > nul
