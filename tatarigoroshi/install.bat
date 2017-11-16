@@ -41,7 +41,7 @@ echo.
 echo D | xcopy /E /Y .\Managed ..\Managed > nul
 echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt > nul
 echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG > nul
-echo D | xcopy /E /Y .\SE ..\StreamingAssets\voice > nul
+echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice > nul
 echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets > nul
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
@@ -53,7 +53,7 @@ timeout /t 1 > nul
 rmdir /S /Q .\CG > nul
 rmdir /S /Q .\CGAlt > nul
 rmdir /S /Q .\Update > nul
-rmdir /S /Q .\SE > nul
+rmdir /S /Q .\voice > nul
 rmdir /S /Q .\Managed > nul
 del .\*.zip > nul
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg > nul
