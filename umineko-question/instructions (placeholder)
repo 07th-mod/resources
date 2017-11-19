@@ -1,0 +1,12 @@
+Just so I don't forget to put this in the wiki later.
+
+```
+brew install p7zip
+brew install aria2
+
+curl -O https://raw.githubusercontent.com/07th-mod/resources/master/umineko-question/install.sh
+
+chmod 755 ./install.sh
+
+./install.sh
+```
