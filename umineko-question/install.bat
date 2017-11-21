@@ -21,8 +21,8 @@ timeout /t 1 > nul
 call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-ren .\Umineko1to4.exe .\Umineko1to4_old.exe > nul
-ren .\0.utf .\0_old.utf > nul
+ren Umineko1to4.exe Umineko1to4_old.exe > nul
+ren 0.utf 0_old.utf > nul
 .\temp\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Beato/Umineko1to4.exe
 .\temp\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/umineko-question/raw/master/InDevelopment/ManualUpdates/0.utf
 .\temp\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Update-v1.zip
