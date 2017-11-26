@@ -15,6 +15,8 @@ mv ./umineko4_FOR_MAC_USERS ./Umineko1to4.app/Contents/MacOS/umineko4
 
 7z x Umineko-Graphics.zip.001 -aoa
 7z x Umineko-Voices.zip
+7z x Umineko-Update-v1.zip -aoa
 
 rm -rf ./Umineko-Graphics.zip*
 rm -rf ./Umineko-Voices.zip
+rm -rf ./Umineko-Update-*.zip
