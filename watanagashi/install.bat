@@ -7,21 +7,22 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
 call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-Voices.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-Voices.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/watanagashi/releases/download/v3.0.1/Watanagashi.Voice.and.Graphics.Patch.v3.0.1.zip
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
+powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/onikakushi/releases/latest).content).assets.browser_download_url | set-content patch.txt
+.\aria2c.exe --file-allocation=none --continue=true -x 8 -i patch.txt
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Extracting files..."
