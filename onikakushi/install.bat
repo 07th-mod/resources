@@ -53,7 +53,7 @@ echo.
 timeout /t 1 > nul
 rmdir /S /Q .\CG > nul
 rmdir /S /Q .\CGAlt > nul
-rmdir /S /Q .\Update > nul
+rmdir /S /Q .\StreamingAssets > nul
 rmdir /S /Q .\voice > nul
 rmdir /S /Q .\Managed > nul
 del .\*.zip > nul
