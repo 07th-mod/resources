@@ -31,8 +31,8 @@ timeout /t 1 > nul
 .\7za.exe x Tatarigoroshi-CGAlt.zip
 .\7za.exe x Tatarigoroshi-Voices.zip
 .\7za.exe x Tatarigoroshi-CG.zip
-echo A | .\7za.exe x Tatarigoroshi.Voice.and.Graphics.Patch.*.zip
-echo A | .\7za.exe x Higurashi-Textboxes.zip
+.\7za.exe x Tatarigoroshi.Voice.and.Graphics.Patch.*.zip
+.\7za.exe x Higurashi-Textboxes.zip -aoa
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul
 timeout /t 1 > nul
