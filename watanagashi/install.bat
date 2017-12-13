@@ -20,7 +20,7 @@ timeout /t 1 > nul
 call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/watanagashi/releases/download/v3.0.0/Watanagashi.Voice.and.Graphics.Patch.v3.0.1.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/watanagashi/releases/download/v3.0.1/Watanagashi.Voice.and.Graphics.Patch.v3.0.1.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 16 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
 timeout /t 1 > nul
 
