@@ -20,9 +20,10 @@ timeout /t 1 > nul
 call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/himatsubushi/releases/latest).content).assets.browser_download_url | set-content patch.txt"
+powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/himatsubushi/releases/latest).content).assets.browser_download_url | set-content local.txt"
 .\aria2c.exe --file-allocation=none --continue=true -x 8 -i patch.txt
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
+.\aria2c.exe https://github.com/07th-mod/resources/raw/master/himatsubushi/updater.bat
 timeout /t 1 > nul
 
 call :colorEcho a0 "Extracting files..."

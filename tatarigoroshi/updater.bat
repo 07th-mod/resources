@@ -17,7 +17,7 @@ if exist local.txt (
 :compare
 call :colorEcho a0 "Downloading remote information for comparison"
 timeout /t 3 > nul
-powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/meakashi/releases/latest).content).assets.browser_download_url | set-content remote.txt"
+powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/tatarigoroshi/releases/latest).content).assets.browser_download_url | set-content remote.txt"
 fc remote.txt local.txt > nul
 if errorlevel 1 goto :download
 
@@ -32,7 +32,7 @@ goto :download
 
 :update
 call :colorEcho a0 "Downloading latest patch..." && echo:
-powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/meakashi/releases/latest).content).assets.browser_download_url | set-content remote.txt"
+powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/tatarigoroshi/releases/latest).content).assets.browser_download_url | set-content remote.txt"
 goto :download
 
 :download
