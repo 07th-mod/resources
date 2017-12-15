@@ -56,6 +56,7 @@ call :colorEcho a0 "Deleting leftovers..."
 echo.
 rmdir /S /Q .\StreamingAssets > nul
 rmdir /S /Q .\Managed > nul
+del ..\StreamingAssets\CompiledUpdateScripts\*.mg > nul
 del *.zip
 
 exit
