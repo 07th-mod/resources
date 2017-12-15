@@ -19,16 +19,16 @@ call :colorEcho a0 "Downloading remote information for comparison"
 timeout /t 3 > nul
 powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/himatsubushi/releases/latest).content).assets.browser_download_url | set-content remote.txt"
 fc remote.txt local.txt > nul
-if errorlevel 1 goto :download
+if errorlevel 1 goto :newver
 
 :samever
 echo Looks like you have the latest version already installed, nothing to do here...
 del remote.txt
 exit
 
-New version found, redirecting to download and installation...
+:newver
+echo New version found, redirecting to download and installation...
 goto :download
-
 
 :update
 call :colorEcho a0 "Downloading latest patch..." && echo:
