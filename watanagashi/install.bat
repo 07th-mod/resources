@@ -26,6 +26,16 @@ powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com
 .\aria2c.exe https://github.com/07th-mod/resources/raw/master/watanagashi/updater.bat
 timeout /t 1 > nul
 
+call :colorEcho a0 "Checking for incomplete downloads..."
+echo.
+timeout /t 1 > nul
+.\aria2c.exe --file-allocation=none --continue=true -x 8 -i local.txt
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Higurashi-Textboxes.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-Voices.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CG.zip
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Watanagashi-CGAlt.zip
+timeout /t 1 > nul
+
 call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
