@@ -12,7 +12,7 @@ rm -rf ../../Managed/Assembly-CSharp.dll
 mv ./Managed/Assembly-CSharp.dll ../../Managed/Assembly-CSharp.dll
 mv ./CGAlt ../CGAlt
 mv ./CG ../CG
-mv ./SE ../voice
+mv ./voice ../voice
 mv ./StreamingAssets/Update/* ../Update
 mkdir ../BGMAlt
 mkdir ../voiceAlt
