@@ -4,20 +4,20 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 
-call :colorEcho a0 "Downloading graphics patch... (1 of 4)"
+call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CG.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-CGAlt.zip
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading voice patch... (2 of 4)"
+call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Himatsubushi-Voices.zip
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading patch... (3 of 4)"
+call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
 powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com/repos/07th-mod/himatsubushi/releases/latest).content).assets.browser_download_url | set-content local.txt"
@@ -26,7 +26,7 @@ powershell -command "(convertfrom-json (invoke-webrequest https://api.github.com
 .\aria2c.exe https://github.com/07th-mod/resources/raw/master/himatsubushi/updater.bat
 timeout /t 1 > nul
 
-call :colorEcho a0 "Checking for incomplete downloads... (4 of 4)"
+call :colorEcho a0 "Checking for incomplete downloads..."
 echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 -i local.txt
