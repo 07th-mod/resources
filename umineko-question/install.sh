@@ -11,8 +11,6 @@ aria2c --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/u
 aria2c --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Update-v1.zip
 aria2c --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Update-v2.zip
 
-mv ./umineko4_FOR_MAC_USERS ./Umineko1to4.app/Contents/MacOS/umineko4
-
 7z x Umineko-Graphics.zip.001 -aoa
 7z x Umineko-Voices.zip
 7z x Umineko-Update-v1.zip -aoa

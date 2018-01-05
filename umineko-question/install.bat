@@ -57,6 +57,7 @@ timeout /t 1 > nul
 rmdir /S /Q .\temp > nul
 del .\Umineko-Graphics.zip.00* > nul
 del .\Umineko-Voices.zip > nul
+del .\Umineko-Update-*.zip > nul
 timeout /t 1 > nul
 
 call :colorEcho a0 "All done, finishing in three seconds..."
