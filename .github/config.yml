@@ -1,0 +1,10 @@
+# Configuration for welcome - https://github.com/behaviorbot/welcome
+
+# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
+
+# Comment to be posted to on first time issues
+newIssueWelcomeComment: >
+  Hello, I'm a bot! This is the ***resources*** repository. Usually, issues about broken links, files or installer code go here. Here are some tips I want to share!
+
+  1. If you had issues with any of our installers, this isn't where you want to post your issue! Open it in the repository related to the game you want to install the patch.
+  2. If you found a broken link or syntax (in our code) or found something that you want to directly improve here, you are in the right place. Our team is everywhere in the world so someone will reply to you shortly. Or at least that's what we hope!
