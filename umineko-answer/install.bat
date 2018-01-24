@@ -11,18 +11,13 @@ if not exist "arc.nsa" goto :wrongFolder
 ren Umineko5to8.exe Umineko5to8_old.exe > nul
 ren 0.utf 0_old.utf > nul
 
-call :colorEcho a0 "Downloading all files. You can close and reopen this at any time, your progress will be saved."
+call :colorEcho a0 "Downloading and verifying all files. You can close and reopen this at any time, your progress will be saved."
 echo.
-timeout /t 1 > nul
-.\temp\aria2c --file-allocation=none --continue=true --max-resume-failure-tries=5 --check-integrity=true --max-concurrent-downloads=1 -x 8 chiru_patch_1.0.meta4
-timeout /t 1 > nul
 
-call :colorEcho a0 "Checking for incomplete downloads..."
-echo.
-timeout /t 1 > nul
-.\temp\aria2c --file-allocation=none --continue=true --max-resume-failure-tries=5 --check-integrity=true --max-concurrent-downloads=1 -x 8 chiru_patch_1.0.meta4
-call :checkError "ERROR - An error occured during the download process. Please try to run the installer again."
-timeout /t 1 > nul
+::aria2c won't retry if it gets a 403 code, so force it to retry continously
+:downloadLoop
+timeout /t 3 > nul
+.\temp\aria2c --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 chiru_patch_1.0.meta4 || goto :downloadLoop
 
 call :colorEcho a0 "Extracting files..."
 echo.
