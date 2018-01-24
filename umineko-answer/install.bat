@@ -23,10 +23,13 @@ call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
 .\temp\7za.exe x UminekoChiru-Graphics.7z.001 -aoa
-call :checkError "ERROR - An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use."
-.\temp\7za.exe x UminekoChiru-Voices.zip
-call :checkError "ERROR - An error occured when extracting the voice files. Please try to run the installer again, and check the game files are not in use."
+call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
+.\temp\7za.exe x UminekoChiru-Voices.zip -aoa
+call :checkError "ERROR An error occured when extracting the voice files. Please try to run the installer again, and check the game files are not in use"
 timeout /t 1 > nul
+
+call :colorEcho a0 "Extraction Finished"
+echo.
 
 :choice
 set /P c=Do you want to delete the temporary install files[Y/N]?
@@ -44,8 +47,8 @@ del .\UminekoChiru-Voices.zip > nul
 timeout /t 1 > nul
 
 :skipDelete
-call :colorEcho a0 "All done"
-pause
+call :colorEcho a0 "All done. Press any key to exit..."
+pause > nul
 exit
 
 :colorEcho
