@@ -4,6 +4,10 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 
+::Check installer is run in the correct game directory. wrongFolderForceInstall label happens if user forces install anyway.
+if not exist "arc.nsa" goto :wrongFolder
+:wrongFolderForceInstall
+
 ren Umineko5to8.exe Umineko5to8_old.exe > nul
 ren 0.utf 0_old.utf > nul
 
@@ -63,3 +67,26 @@ IF %ERRORLEVEL% NEQ 0 (
   exit
 )
 EXIT /B 0
+
+::Actions to take if user selected the wrong folder
+:wrongFolder
+call :colorEcho c0 "WARNING - The selected install directory doesnt appear to contain the game files."
+echo.
+explorer .
+
+:wrongFolderChoice
+set /P c=An explorer window has been opened. Is this the Umineko Chiru game directory[Y/N]?
+if /I "%c%" EQU "Y" goto :wrongFolderForceInstall
+if /I "%c%" EQU "N" goto :wrongFolderExit
+goto :wrongFolderChoice
+
+
+:wrongFolderExit
+call :colorEcho c0 "Installation has been aborted - wrong install folder"
+echo.
+call :colorEcho 0f "Please run the installer again with the correct game directory."
+echo.
+call :colorEcho 0f "You may wish to delete the temporary files which have been created."
+echo.
+pause
+exit
