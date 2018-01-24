@@ -4,38 +4,19 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 
-call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
-echo.
-timeout /t 1 > nul
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.001
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.002
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.003
-timeout /t 1 > nul
-
-call :colorEcho a0 "Downloading voice patch... (2 of 3)"
-echo.
-timeout /t 1 > nul
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Voices.zip
-timeout /t 1 > nul
-
-call :colorEcho a0 "Downloading patch... (3 of 3)"
-echo.
-timeout /t 1 > nul
 ren Umineko5to8.exe Umineko5to8_old.exe > nul
 ren 0.utf 0_old.utf > nul
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/Umineko5to8.exe
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/umineko-answer/raw/master/0.utf
+
+call :colorEcho a0 "Downloading all files. You can close and reopen this at any time, your progress will be saved."
+echo.
+timeout /t 1 > nul
+.\temp\aria2c --file-allocation=none --continue=true --max-resume-failure-tries=5 --check-integrity=true --max-concurrent-downloads=1 -x 8 chiru_patch_1.0.meta4
 timeout /t 1 > nul
 
 call :colorEcho a0 "Checking for incomplete downloads..."
 echo.
 timeout /t 1 > nul
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/Umineko5to8.exe
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/umineko-answer/blob/master/0.utf
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Voices.zip
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.001
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.002
-.\temp\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.003
+.\temp\aria2c --file-allocation=none --continue=true --max-resume-failure-tries=5 --check-integrity=true --max-concurrent-downloads=1 -x 8 chiru_patch_1.0.meta4
 timeout /t 1 > nul
 
 call :colorEcho a0 "Extracting files..."
