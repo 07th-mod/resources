@@ -30,12 +30,12 @@ call :checkError "ERROR - An error occured when extracting the voice files. Plea
 timeout /t 1 > nul
 
 :choice
-set /P c=Are you sure you want to continue[Y/N]?
-if /I "%c%" EQU "Y" goto :do_delete
-if /I "%c%" EQU "N" goto :skip_delete
+set /P c=Do you want to delete the temporary install files[Y/N]?
+if /I "%c%" EQU "Y" goto :doDelete
+if /I "%c%" EQU "N" goto :skipDelete
 goto :choice
 
-:do_delete
+:doDelete
 call :colorEcho a0 "Deleting useless files..."
 echo.
 timeout /t 1 > nul
@@ -44,12 +44,11 @@ del .\UminekoChiru-Graphics.7z.00* > nul
 del .\UminekoChiru-Voices.zip > nul
 timeout /t 1 > nul
 
-:skip_delete
-call :colorEcho a0 "All done, finishing in three seconds..."
-timeout /t 3 > nul
-
+:skipDelete
+call :colorEcho a0 "All done"
 pause
 exit
+
 :colorEcho
 echo off
 <nul set /p ".=%DEL%" > "%~2"
