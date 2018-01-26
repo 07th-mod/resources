@@ -8,20 +8,13 @@ try:
     import colorama
     from colorama import Fore, Back, Style
     colorama.init()
-    colorama_imported = True
 
-    def printColor(text, color=''):
-        if colorama_imported:
-            print(Style.BRIGHT + color + text + Style.RESET_ALL)
-        else:
-            print(text)
-
+    def printColor(text, color=''): print(Style.BRIGHT + color + text + Style.RESET_ALL)
     def printOK(text): printColor(text, Fore.GREEN)
     def printWarning(text): printColor(text, Fore.YELLOW)
     def printFailure(text): printColor(text, Fore.RED)
 
 except ImportError:
-    colorama_imported = False
     def printOK(text): print('[OK     ] ' + text)
     def printWarning(text): print('[WARNING] ' + text)
     def printFailure(text): print('[WARNING] ' + text)
