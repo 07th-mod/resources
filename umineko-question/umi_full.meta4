@@ -1486,14 +1486,6 @@
   </file>
 
   <file name="0.utf">
-    <size>15354631</size>
-    <hash type="sha-1">e247151a78db7393564f0e50c229c95bedd47e98</hash>
-    <pieces length="4194304" type="sha-1">
-        <hash>7764d2710b6182fb24c8d3290811d5e0576c13af</hash>
-        <hash>f44bc217180a9c73c18bdcc55ca78e87714ce0d5</hash>
-        <hash>556023a47bf8ac3ad2c69dc5e4ae3e992020bb09</hash>
-        <hash>047b33a3bfa8644020a6574aecf83a9180145c1d</hash>
-    </pieces>
     <url>https://github.com/07th-mod/umineko-question/raw/master/InDevelopment/ManualUpdates/0.utf</url>
   </file>
 
