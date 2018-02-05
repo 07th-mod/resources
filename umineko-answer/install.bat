@@ -24,6 +24,7 @@ echo.
 timeout /t 1 > nul
 .\temp\7za.exe x UminekoChiru-Graphics.7z.001 -aoa
 call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
+.\temp\7za.exe x UminekoChiru-Update-v1.zip -aoa
 .\temp\7za.exe x UminekoChiru-Voices.zip -aoa
 call :checkError "ERROR An error occured when extracting the voice files. Please try to run the installer again, and check the game files are not in use"
 timeout /t 1 > nul
@@ -44,6 +45,7 @@ timeout /t 1 > nul
 rmdir /S /Q .\temp > nul
 del .\UminekoChiru-Graphics.7z.00* > nul
 del .\UminekoChiru-Voices.zip > nul
+del .\UminekoChiru-Update-*.zip > nul
 timeout /t 1 > nul
 
 :skipDelete
