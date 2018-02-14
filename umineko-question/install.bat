@@ -35,6 +35,10 @@ timeout /t 1 > nul
 call :colorEcho a0 "Extraction Finished"
 echo.
 
+robocopy en\bmp\background\r_click en\bmp\r_click /E
+call :colorEcho a0 "Character Bio Hotfix Finished"
+echo.
+
 :choice
 set /P c=Do you want to delete the temporary install files[Y/N]?
 if /I "%c%" EQU "Y" goto :doDelete
