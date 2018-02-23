@@ -22,6 +22,8 @@ timeout /t 3 > nul
 call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
+ren 0.utf 0.u > nul
+ren saves mysav > nul
 .\temp\7za.exe x UminekoChiru-Graphics.7z.001 -aoa
 call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
 .\temp\7za.exe x UminekoChiru-Update-v1.zip -aoa

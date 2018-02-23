@@ -1892,13 +1892,6 @@
   </file>
 
   <file name="Umineko5to8.exe">
-    <size>8638201</size>
-    <hash type="sha-1">0292e227a72f7e60f91f569b66c7d20c85d5945e</hash>
-    <pieces length="4194304" type="sha-1">
-        <hash>b3785fb55cef75ec8a7b2b99f1bcba00579fcbdb</hash>
-        <hash>620ef1a0b217d9afa73b6c41b80462ba9a27404d</hash>
-        <hash>ff90d65add1f3571ddfa8b26d2948b955bd137d9</hash>
-    </pieces>
     <url>https://github.com/07th-mod/resources/releases/download/Bern/Umineko5to8.exe</url>
   </file>
 

@@ -1475,13 +1475,6 @@
   </file>
 
   <file name="Umineko1to4.exe">
-    <size>8716969</size>
-    <hash type="sha-1">e97d6af818b2cbe8bda3ee4adecdd94556e2c0fd</hash>
-    <pieces length="4194304" type="sha-1">
-        <hash>44d30477bdb61b7ddbc6a814c39258a6f40fb46a</hash>
-        <hash>b8547f365822cbd3320c4af73d2371b5c6d0c4c0</hash>
-        <hash>b87069e39ce6cbabc78403c8c8b24a1b418d287d</hash>
-    </pieces>
     <url>https://github.com/07th-mod/resources/releases/download/Beato/Umineko1to4.exe</url>
   </file>
 
