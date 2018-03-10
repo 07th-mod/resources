@@ -30,7 +30,7 @@ call :checkError "ERROR An error occured when extracting the graphics files. Ple
 call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
 .\temp\7za.exe x Umineko-Update-v2.zip -aoa
 call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
-.\temp\7za.exe x Umineko-Voices.zip -aoa
+.\temp\7za.exe x Umineko-Voices.7z -aoa
 call :checkError "ERROR An error occured when extracting the voice files. Please try to run the installer again, and check the game files are not in use"
 timeout /t 1 > nul
 
@@ -54,7 +54,7 @@ timeout /t 1 > nul
 rmdir /S /Q .\temp > nul
 del .\Umineko-Graphics.zip.00* > nul
 del .\Umineko-Update-v*.zip > nul
-del .\Umineko-Voices.zip > nul
+del .\Umineko-Voices.7z > nul
 timeout /t 1 > nul
 
 :skipDelete
