@@ -63,6 +63,7 @@ echo D | xcopy /E /Y .\Managed ..\Managed > nul
 echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt > nul
 echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG > nul
 echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice > nul
+echo D | xcopy /E /Y .\spectrum ..\StreamingAssets\spectrum > nul
 echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets > nul
 echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets > nul
 echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS > nul
@@ -77,6 +78,7 @@ rmdir /S /Q .\CG > nul
 rmdir /S /Q .\CGAlt > nul
 rmdir /S /Q .\StreamingAssets > nul
 rmdir /S /Q .\voice > nul
+rmdir /S /Q .\spectrum > nul
 rmdir /S /Q .\Managed > nul
 del .\*.7z > nul
 del .\*.zip > nul
