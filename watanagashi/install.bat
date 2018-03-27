@@ -17,7 +17,7 @@ timeout /t 1 > nul
 call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-Voices.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Downloading patch... (3 of 3)"
@@ -32,7 +32,7 @@ echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/watanagashi/releases/download/%version%/Watanagashi.Voice.and.Graphics.Patch.%version%.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-Voices.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-CG.7z
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Watanagashi-CGAlt.7z
 timeout /t 1 > nul
@@ -42,7 +42,7 @@ echo.
 timeout /t 1 > nul
 .\7za.exe x Watanagashi-CGAlt.7z
 .\7za.exe x Watanagashi-CG.7z
-.\7za.exe x Watanagashi-Voices.7z
+.\7za.exe x Watanagashi-Voices.zip
 .\7za.exe x Watanagashi.Voice.and.Graphics.Patch.*.zip
 .\7za.exe x Watanagashi-UI.7z
 rmdir /S /Q ..\StreamingAssets\CG > nul

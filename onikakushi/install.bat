@@ -17,7 +17,7 @@ timeout /t 1 > nul
 call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-Voices.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Downloading patch... (3 of 3)"
@@ -32,7 +32,7 @@ echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/onikakushi/releases/download/%version%/Onikakushi.Voice.and.Graphics.Patch.%version%.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-Voices.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-CG.7z
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Onikakushi-CGAlt.7z
 timeout /t 1 > nul
@@ -42,7 +42,7 @@ echo.
 timeout /t 1 > nul
 .\7za.exe x Onikakushi-CGAlt.7z
 .\7za.exe x Onikakushi-CG.7z
-.\7za.exe x Onikakushi-Voices.7z
+.\7za.exe x Onikakushi-Voices.zip
 .\7za.exe x Onikakushi.Voice.and.Graphics.Patch.*.zip
 .\7za.exe x Onikakushi-UI.7z
 rmdir /S /Q ..\StreamingAssets\CG > nul
