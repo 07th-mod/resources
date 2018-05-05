@@ -24,7 +24,6 @@ echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/meakashi/releases/download/%version%/Meakashi.Voice.and.Graphics.Patch.%version%.zip
 .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/HigurashiKai-Textboxes.zip
-.\aria2c.exe https://github.com/07th-mod/resources/raw/master/meakashi/updater.bat
 timeout /t 1 > nul
 
 call :colorEcho a0 "Checking for incomplete downloads..."
