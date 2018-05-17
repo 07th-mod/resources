@@ -17,7 +17,7 @@ echo.
 ::aria2c won't retry if it gets a 403 code, so force it to retry continously
 :downloadLoop
 timeout /t 3 > nul
-.\temp\aria2c --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4 || goto :downloadLoop
+.\temp\aria2c --console-log-level=error --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4 || goto :downloadLoop
 
 call :colorEcho a0 "Extracting files..."
 echo.
