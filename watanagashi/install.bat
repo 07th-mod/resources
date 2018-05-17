@@ -39,11 +39,11 @@ timeout /t 1 > nul
 call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
-.\7za.exe x Watanagashi-CGAlt.7z
-.\7za.exe x Watanagashi-CG.7z
-.\7za.exe x Watanagashi-Voices.7z
-.\7za.exe x Watanagashi.Voice.and.Graphics.Patch.*.zip
-.\7za.exe x Watanagashi-UI.7z
+.\7za.exe x Watanagashi-CGAlt.7z -aoa
+.\7za.exe x Watanagashi-CG.7z -aoa
+.\7za.exe x Watanagashi-Voices.7z -aoa
+.\7za.exe x Watanagashi.Voice.and.Graphics.Patch.*.zip -aoa
+.\7za.exe x Watanagashi-UI.7z -aoa
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul
 ren ..\sharedassets0.assets sharedassets0.assets.backup

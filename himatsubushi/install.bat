@@ -45,10 +45,10 @@ timeout /t 1 > nul
 call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
-.\7za.exe x Himatsubushi-CG.7z
-.\7za.exe x Himatsubushi-CGAlt.7z
-.\7za.exe x Himatsubushi-Voices.7z
-.\7za.exe x Himatsubushi.Voice.and.Graphics.Patch.*.zip
+.\7za.exe x Himatsubushi-CG.7z -aoa
+.\7za.exe x Himatsubushi-CGAlt.7z -aoa
+.\7za.exe x Himatsubushi-Voices.7z -aoa
+.\7za.exe x Himatsubushi.Voice.and.Graphics.Patch.*.zip -aoa
 REM .\7za.exe x Himatsubushi-UI*.7z
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul

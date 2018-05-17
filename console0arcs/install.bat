@@ -39,11 +39,11 @@ timeout /t 1 > nul
 call :colorEcho a0 "Extracting files..."
 echo.
 timeout /t 1 > nul
-.\7za.exe x ConsoleArcs-CG.7z
-.\7za.exe x ConsoleArcs-BGM.7z
-.\7za.exe x ConsoleArcs-SE.7z
-.\7za.exe x ConsoleArcs-Voices.7z
-.\7za.exe x ConsoleArcs.Voice.and.Graphics.Patch.*.zip
+.\7za.exe x ConsoleArcs-CG.7z -aoa
+.\7za.exe x ConsoleArcs-BGM.7z -aoa
+.\7za.exe x ConsoleArcs-SE.7z -aoa
+.\7za.exe x ConsoleArcs-Voices.7z -aoa
+.\7za.exe x ConsoleArcs.Voice.and.Graphics.Patch.*.zip -aoa
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul
 timeout /t 1 > nul
