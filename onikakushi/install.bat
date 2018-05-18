@@ -4,7 +4,7 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
 )
 
-set version=v5.6.0
+set version=v5.6.1
 
 call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
