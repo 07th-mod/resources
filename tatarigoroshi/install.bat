@@ -18,6 +18,7 @@ if exist ..\..\steam_api.dll (
 ) else (
     if exist ..\..\unins000.exe
     .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI.7z
+    goto :continue
     ) else (
     .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI_MG.7z
     goto :continue
