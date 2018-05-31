@@ -6,35 +6,25 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
 
 set version=v3.1.0
 
-call :colorEcho a0 "Downloading graphics patch... (1 of 4)"
+call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-CG.7z
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading voices and sounds... (2 of 4)"
+call :colorEcho a0 "Downloading voices and sounds... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-BGM.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-Voices.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-SE.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-BGM.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-SE.7z
 timeout /t 1 > nul
 
-call :colorEcho a0 "Downloading patch... (3 of 4)"
+call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/higurashi-console-arcs/releases/download/%version%/ConsoleArcs.Voice.and.Graphics.Patch.%version%.zip
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/higurashi-console-arcs/releases/download/%version%/ConsoleArcs.Voice.and.Graphics.Patch.%version%.zip
 timeout /t 1 > nul
-
-call :colorEcho a0 "Checking for incomplete downloads... (4 of 4)"
-echo.
-timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/higurashi-console-arcs/releases/download/%version%/ConsoleArcs.Voice.and.Graphics.Patch.%version%.zip
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-BGM.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-Voices.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-SE.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/ConsoleArcs-CG.7z
-
 
 call :colorEcho a0 "Extracting files..."
 echo.

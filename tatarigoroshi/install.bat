@@ -9,35 +9,25 @@ set version=v5.1.0
 call :colorEcho a0 "Downloading graphics patch... (1 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CGAlt.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CGAlt.7z
 
 if exist ..\..\steam_api.dll (
-    .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI.7z
+    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI.7z
 ) else (
-    .\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI_MG.7z
+    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI_MG.7z
 )
 
-:continue
 call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-Voices.7z
 timeout /t 1 > nul
 
 call :colorEcho a0 "Downloading patch... (3 of 3)"
 echo.
 timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/tatarigoroshi/releases/download/%version%/Tatarigoroshi.Voice.and.Graphics.Patch.%version%.zip
-timeout /t 1 > nul
-
-call :colorEcho a0 "Checking for incomplete downloads..."
-echo.
-timeout /t 1 > nul
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/tatarigoroshi/releases/download/%version%/Tatarigoroshi.Voice.and.Graphics.Patch.%version%.zip
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-Voices.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CGAlt.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/tatarigoroshi/releases/download/%version%/Tatarigoroshi.Voice.and.Graphics.Patch.%version%.zip
 timeout /t 1 > nul
 
 call :colorEcho a0 "Extracting files..."
