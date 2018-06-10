@@ -16,7 +16,7 @@ fi
 # asks if the user wants to install adv mode
 printf "\n"
 while true; do
-	read -p "Do you wish to install the ADV Mode (textbox at bottom of screen like in the PS3 Game)? It's still in beta. (Y/n) " yn
+	read -p "Do you wish to install the ADV Mode (textbox at bottom of screen like in the PS3 Game)? (Y/n) " yn
 	case $yn in
     	[Nn]* ) adv=1; break;;
    		[Yy]* ) adv=0; break;;
