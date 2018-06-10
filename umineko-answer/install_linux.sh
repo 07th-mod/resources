@@ -88,7 +88,7 @@ fi
 printf '\n\nExtracting the archives...\n\n'
 7za x temp/UminekoChiru-Graphics.7z.001 -aoa
 7za x temp/UminekoChiru-Voices.7z
-7za x temp/UminekoChiru-Update-v1.zip -aoa	
+7za x temp/UminekoChiru-Update* -aoa	
 if [ $adv -eq 0 ]; then
 	7za x temp/UminekoChiru-ADV_Mode.7z -aoa
 fi
