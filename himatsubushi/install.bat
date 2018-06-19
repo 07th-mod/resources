@@ -11,7 +11,7 @@ echo.
 timeout /t 1 > nul
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Himatsubushi-CG.7z
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Himatsubushi-CGAlt.7z
-REM .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Himatsubushi-UI.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Himatsubushi-UI.7z
 
 call :colorEcho a0 "Downloading voice patch... (2 of 3)"
 echo.
@@ -32,11 +32,11 @@ timeout /t 1 > nul
 .\7za.exe x Himatsubushi-CGAlt.7z -aoa
 .\7za.exe x Himatsubushi-Voices.7z -aoa
 .\7za.exe x Himatsubushi.Voice.and.Graphics.Patch.*.zip -aoa
-REM .\7za.exe x Himatsubushi-UI*.7z
+.\7za.exe x Himatsubushi-UI*.7z
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul
-REM ren ..\sharedassets0.assets sharedassets0.assets.backup
-REM ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+ren ..\sharedassets0.assets sharedassets0.assets.backup
+ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
 timeout /t 1 > nul
 
 call :colorEcho a0 "Moving folders..."
@@ -46,8 +46,8 @@ echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt > nul
 echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG > nul
 echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice > nul
 echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets > nul
-REM echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets > nul
-REM echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS > nul
+echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets > nul
+echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS > nul
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
@@ -63,7 +63,7 @@ rmdir /S /Q .\spectrum > nul
 rmdir /S /Q .\Managed > nul
 del .\*.7z > nul
 del .\*.zip > nul
-REM del .\sharedassets0.assets* > nul
+del .\sharedassets0.assets* > nul
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg > nul
 timeout /t 1 > nul
 

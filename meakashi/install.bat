@@ -36,7 +36,7 @@ timeout /t 1 > nul
 rmdir /S /Q ..\StreamingAssets\CG > nul
 rmdir /S /Q ..\StreamingAssets\CGAlt > nul
 ren ..\sharedassets0.assets sharedassets0.assets.backup
-REM ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
 timeout /t 1 > nul
 
 call :colorEcho a0 "Moving folders..."
@@ -47,7 +47,7 @@ echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG > nul
 echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice > nul
 echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets > nul
 echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets > nul
-REM echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS > nul
+echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS > nul
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
@@ -63,7 +63,7 @@ rmdir /S /Q .\spectrum > nul
 rmdir /S /Q .\Managed > nul
 del .\*.7z > nul
 del .\*.zip > nul
-REM del .\sharedassets0.assets* > nul
+del .\sharedassets0.assets* > nul
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg > nul
 timeout /t 1 > nul
 
