@@ -16,7 +16,7 @@ fi
 # asks if the user wants to install adv mode
 printf "\n"
 while true; do
-	read -p "Do you wish to install the ADV Mode (textbox at bottom of screen like in the PS3 Game)? It's still in beta. (Y/n) " yn
+	read -p "Do you wish to install the ADV Mode (textbox at bottom of screen like in the PS3 Game)? (Y/n) " yn
 	case $yn in
     	[Nn]* ) adv=1; break;;
    		[Yy]* ) adv=0; break;;
@@ -79,7 +79,6 @@ mv temp/Umineko5to8 Umineko5to8
 if [ $adv -eq 0 ]; then
 	mv temp/0_adv.utf 0.u
 	mv temp/0.utf 0_nvl.utf
-	cp -n fonts fontsbackup
 else
 	mv temp/0.utf 0.u
 fi
@@ -88,7 +87,7 @@ fi
 printf '\n\nExtracting the archives...\n\n'
 7za x temp/UminekoChiru-Graphics.7z.001 -aoa
 7za x temp/UminekoChiru-Voices.7z
-7za x temp/UminekoChiru-Update-v1.zip -aoa	
+7za x temp/UminekoChiru-Update* -aoa	
 if [ $adv -eq 0 ]; then
 	7za x temp/UminekoChiru-ADV_Mode.7z -aoa
 fi

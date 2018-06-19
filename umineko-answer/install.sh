@@ -15,7 +15,7 @@ aria2c --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/r
 
 mv 0.utf 0.u
 7z x UminekoChiru-Graphics.7z.001 -aoa
-7z x UminekoChiru-Update-v1.zip -aoa
+7z x UminekoChiru-Update-* -aoa
 7z x UminekoChiru-Voices.7z
 7z x Umineko5to8.app.zip -aoa
 
