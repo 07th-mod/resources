@@ -60,8 +60,8 @@ del .\*.zip
 del .\sharedassets0.assets
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
 cd ..
-rmdir /S /Q .\temp
 
 echo All done, finishing in three seconds...
+rmdir /S /Q .\temp
 
 exit

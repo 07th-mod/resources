@@ -28,8 +28,8 @@ rmdir /S /Q .\voice
 rmdir /S /Q .\StreamingAssets
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
 cd ..
-rmdir /S /Q .\temp
 
 echo All done, finishing in three seconds...
+rmdir /S /Q .\temp
 
 exit
