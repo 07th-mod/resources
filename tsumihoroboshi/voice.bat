@@ -30,6 +30,6 @@ del ..\StreamingAssets\CompiledUpdateScripts\*.mg
 cd ..
 rmdir /S /Q .\temp
 
-echo All done, finishing in three seconds
+echo All done, finishing in three seconds...
 
 exit
