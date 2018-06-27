@@ -1,6 +1,6 @@
 @echo off
 
-set version=v5.2.0
+set version=v5.2.1
 
 echo Downloading graphics patch... (1 of 3)
 echo.
