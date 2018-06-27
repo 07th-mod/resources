@@ -1,63 +1,72 @@
 @echo off
-SETLOCAL EnableDelayedExpansion
-for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do     rem"') do (
-  set "DEL=%%a"
+
+::installer may execute batch file from temporary directory - if this is the case, move one folder higher to install into game directory
+if exist "..\arc.nsa" (
+    if not exist "arc.nsa" (
+        echo INFO: Batch file was run from temp directory - changing directory to game directory root...
+        echo.
+        cd ..
+    )
 )
 
-echo "Files in this folder can be deleted after install. You can also back them up incase you need to re-install later." > "temp/README - Temp folder can be deleted or backed up after install.txt"
+if not exist ".\temp\aria2c.exe" (
+    echo ERROR: aria2c not found in temp folder - installation cancelled
+    EXIT /B 0
+)
 
-ren Umineko1to4.exe Umineko1to4_old.exe > nul
-ren 0.utf 0_old.utf > nul
+if not exist ".\temp\7za.exe" (
+    echo ERROR: 7za not found in temp folder - installation cancelled
+    EXIT /B 0
+)
 
-call :colorEcho a0 "Downloading and verifying all files. You can close and reopen this at any time, your progress will be saved."
+::add a readme to the temp directory
+echo Writing readme to temp folder...
+echo.
+echo "Files in this folder can be deleted after install. You can also back them up incase you need to re-install later. Try playing the game first before deleting anything!" > "temp/README - Temp folder can be deleted or backed up after install.txt"
+
+echo Backing up exe and script files...
+echo.
+move /Y Umineko1to4.exe Umineko1to4_backup.exe || echo INFO - Couldn't backup exe - continuing install anyway
+echo.
+move /Y 0.utf 0_backup.utf || echo INFO - Couldn't backup script file - continuing install anyway
+echo.
+
+echo Downloading and verifying all files. You can close and reopen this at any time, your progress will be saved.
+echo Please ignore any Checksum Warnings - they always occur when a file is first downloaded or the download is resumed.
 echo.
 
 ::aria2c won't retry if it gets a 403 code, so force it to retry continously
-:downloadLoop
-timeout /t 3 > nul
-.\temp\aria2c --console-log-level=error --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4 --dir=temp || goto :downloadLoop
+:downloadLoop    
+.\temp\aria2c --console-log-level=error --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4 --dir=temp || (timeout /t 3 && goto :downloadLoop)
 
-call :colorEcho a0 "Copying files..."
+::Begin copying, extraction, and renaming
+echo Copying umineko1to4 exe and script file...
 copy /Y temp\Umineko1to4.exe .
-copy /Y temp\0.utf .
-
-call :colorEcho a0 "Extracting files..."
-echo.
-timeout /t 1 > nul
-ren 0.utf 0.u > nul
-ren saves mysav > nul
-.\temp\7za.exe x temp\Umineko-Graphics.zip.001 -aoa
-call :checkError "ERROR An error occured when extracting the graphics files. Please try to run the installer again, and check the game files are not in use"
-.\temp\7za.exe x temp\Umineko-Update-04_2018.zip -aoa
-call :checkError "ERROR An error occured when extracting the update files. Please try to run the installer again, and check the game files are not in use"
-.\temp\7za.exe x temp\Umineko-Voices.7z -aoa
-call :checkError "ERROR An error occured when extracting the voice files. Please try to run the installer again, and check the game files are not in use"
-timeout /t 1 > nul
-
-call :colorEcho a0 "Extraction Finished"
+copy /Y temp\0.utf 0.u
 echo.
 
-robocopy en\bmp\background\r_click en\bmp\r_click /E
-call :colorEcho a0 "Character Bio Hotfix Finished"
+echo Renaming saves folder...
+ren saves mysav || echo INFO - Couldn't rename saves folder - continuing install anyway
 echo.
+
+echo Extracting Graphics...
+.\temp\7za.exe x temp\Umineko-Graphics.zip.001 -aoa || echo ERROR during graphics extraction. Check the game files are not in use. && goto :installFailed
+
+echo Extracting Voices...
+.\temp\7za.exe x temp\Umineko-Voices.7z -aoa || echo ERROR during voices extraction. Check the game files are not in use. && goto :installFailed
+
+echo Extracting Updates...
+.\temp\7za.exe x temp\Umineko-Update-04_2018.zip -aoa || echo ERROR during updates extraction. Check the game files are not in use. && goto :installFailed
 
 ::open the temp folder so users can delete/backup any temp install files
-call :colorEcho a0 "Temporary install files are shown - please delete or back them up if you wish to re-install"
+echo Opening temp folder for user to clean-up manually...
 explorer temp
-call :colorEcho a0 "All done, finishing in three seconds..."
-exit
 
-:colorEcho
-echo off
-<nul set /p ".=%DEL%" > "%~2"
-findstr /v /a:%1 /R "^$" "%~2" nul
-del "%~2" > nul 2>&1i
-EXIT /B 0
+echo All done, finishing in three seconds
+timeout /t 3
 
-:checkError
-IF %ERRORLEVEL% NEQ 0 (
-  echo %*
-  pause
-  exit
-)
-EXIT /B 0
+exit /B %ERRORLEVEL%
+
+:installFailed    
+echo ERROR - An installation step failed! Installation cancelled!
+exit /B %ERRORLEVEL%
