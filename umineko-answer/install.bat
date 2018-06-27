@@ -26,9 +26,9 @@ echo "Files in this folder can be deleted after install. You can also back them 
 
 echo Backing up exe and script files...
 echo.
-move /Y Umineko5to8.exe Umineko5to8_backup.exe || echo INFO - Couldn't backup exe - continuing install anyway
+if not exist "Umineko5to8_backup.exe" move /Y Umineko5to8.exe Umineko5to8_backup.exe || echo INFO - Couldn't backup exe - continuing install anyway
 echo.
-move /Y 0.utf 0_backup.utf || echo INFO - Couldn't backup script file - continuing install anyway
+if not exist "0_backup.utf" move /Y 0.utf 0_backup.utf || echo INFO - Couldn't backup script file - continuing install anyway
 echo.
 
 echo Downloading and verifying all files. You can close and reopen this at any time, your progress will be saved.
