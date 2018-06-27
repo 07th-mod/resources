@@ -28,12 +28,12 @@ rmdir /S /Q ..\StreamingAssets\CGAlt
 
 echo Moving folders...
 echo.
-echo D | xcopy /E /Y .\Managed ..\Managed
-echo D | xcopy /E /Y .\SE ..\StreamingAssets\SE
-echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG
-echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice
-echo D | xcopy /E /Y .\BGM ..\StreamingAssets\BGM
-echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets
+xcopy /E /I /Y .\Managed ..\Managed
+xcopy /E /I /Y .\SE ..\StreamingAssets\SE
+xcopy /E /I /Y .\CG ..\StreamingAssets\CG
+xcopy /E /I /Y .\voice ..\StreamingAssets\voice
+xcopy /E /I /Y .\BGM ..\StreamingAssets\BGM
+xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt

@@ -32,15 +32,15 @@ ren ..\sharedassets0.assets sharedassets0.assets.backup
 
 echo Moving folders...
 echo.
-echo D | xcopy /E /Y .\Managed ..\Managed
-echo D | xcopy /E /Y .\Plugins ..\Plugins
-echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt
-echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG
-echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice
-echo D | xcopy /E /Y .\spectrum ..\StreamingAssets\spectrum
-echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets
-echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets
-echo F | xcopy /Y .\mv07.mp4 ..\StreamingAssets\movies\mv07.mp4
+xcopy /E /I /Y .\Managed ..\Managed
+xcopy /E /I /Y .\Plugins ..\Plugins
+xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
+xcopy /E /I /Y .\CG ..\StreamingAssets\CG
+xcopy /E /I /Y .\voice ..\StreamingAssets\voice
+xcopy /E /I /Y .\spectrum ..\StreamingAssets\spectrum
+xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
+xcopy /Y /I .\sharedassets0.assets ..\sharedassets0.assets
+xcopy /Y /I .\mv07.mp4 ..\StreamingAssets\movies\mv07.mp4
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
