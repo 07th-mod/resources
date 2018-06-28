@@ -62,6 +62,9 @@ echo Extracting Updates...
 echo Opening temp folder for user to clean-up manually...
 explorer temp
 
+::write batch file to let users launch game in debug mode which records a log
+echo Umineko1to4.exe --debug > "Umineko1to4_DebugMode.bat"
+
 echo All done, finishing in three seconds
 timeout /t 3
 
