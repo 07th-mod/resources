@@ -17,8 +17,8 @@ echo.
 
 echo Moving folders...
 echo.
-echo D | xcopy /E /Y .\voice ..\StreamingAssets\SE
-echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets
+xcopy /E /I /Y .\voice ..\StreamingAssets\SE
+xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
 
 echo Deleting useless files...
 echo.

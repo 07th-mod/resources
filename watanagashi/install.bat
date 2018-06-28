@@ -39,8 +39,8 @@ xcopy /E /I /Y .\CG ..\StreamingAssets\CG
 xcopy /E /I /Y .\voice ..\StreamingAssets\voice
 xcopy /E /I /Y .\spectrum ..\StreamingAssets\spectrum
 xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
-xcopy /Y /I .\sharedassets0.assets ..\sharedassets0.assets
-xcopy /Y /I .\mv07.mp4 ..\StreamingAssets\movies\mv07.mp4
+move .\sharedassets0.assets ..\sharedassets0.assets
+move .\mv07.mp4 ..\StreamingAssets\movies\mv07.mp4
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt

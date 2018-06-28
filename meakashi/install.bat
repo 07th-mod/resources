@@ -31,13 +31,13 @@ ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
 
 echo Moving folders...
 echo.
-echo D | xcopy /E /Y .\Managed ..\Managed
-echo D | xcopy /E /Y .\CGAlt ..\StreamingAssets\CGAlt
-echo D | xcopy /E /Y .\CG ..\StreamingAssets\CG
-echo D | xcopy /E /Y .\voice ..\StreamingAssets\voice
-echo D | xcopy /E /Y .\StreamingAssets ..\StreamingAssets
-echo F | xcopy /Y .\sharedassets0.assets ..\sharedassets0.assets
-echo F | xcopy /Y .\sharedassets0.assets.resS ..\sharedassets0.assets.resS
+xcopy /E /I /Y .\Managed ..\Managed
+xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
+xcopy /E /I /Y .\CG ..\StreamingAssets\CG
+xcopy /E /I /Y .\voice ..\StreamingAssets\voice
+xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
+move .\sharedassets0.assets ..\sharedassets0.assets
+move .\sharedassets0.assets.resS ..\sharedassets0.assets.resS
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
