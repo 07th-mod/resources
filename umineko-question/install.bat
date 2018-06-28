@@ -50,13 +50,13 @@ ren saves mysav || echo INFO - Couldn't rename saves folder - continuing install
 echo.
 
 echo Extracting Graphics...
-.\temp\7za.exe x temp\Umineko-Graphics.zip.001 -aoa || echo ERROR during graphics extraction. Check the game files are not in use. && goto :installFailed
+.\temp\7za.exe x temp\Umineko-Graphics.zip.001 -aoa -bsp1 || echo ERROR during graphics extraction. Check the game files are not in use. && goto :installFailed
 
 echo Extracting Voices...
-.\temp\7za.exe x temp\Umineko-Voices.7z -aoa || echo ERROR during voices extraction. Check the game files are not in use. && goto :installFailed
+.\temp\7za.exe x temp\Umineko-Voices.7z -aoa -bsp1 || echo ERROR during voices extraction. Check the game files are not in use. && goto :installFailed
 
 echo Extracting Updates...
-.\temp\7za.exe x temp\Umineko-Update-04_2018.zip -aoa || echo ERROR during updates extraction. Check the game files are not in use. && goto :installFailed
+.\temp\7za.exe x temp\Umineko-Update-04_2018.zip -aoa -bsp1 || echo ERROR during updates extraction. Check the game files are not in use. && goto :installFailed
 
 ::open the temp folder so users can delete/backup any temp install files
 echo Opening temp folder for user to clean-up manually...
