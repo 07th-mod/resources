@@ -9,6 +9,8 @@ if exist "..\arc.nsa" (
     )
 )
 
+echo Install bat is being run from [%cd%]
+
 if not exist ".\temp\aria2c.exe" (
     echo ERROR: aria2c not found in temp folder - installation cancelled
     EXIT /B 0
@@ -64,6 +66,9 @@ explorer temp
 
 ::write batch file to let users launch game in debug mode which records a log
 echo Umineko1to4.exe --debug > "Umineko1to4_DebugMode.bat"
+
+echo mklink saves mysav /J > "EnableSteamSync.bat"
+echo pause >> "EnableSteamSync.bat"
 
 echo All done, finishing in three seconds
 timeout /t 3
