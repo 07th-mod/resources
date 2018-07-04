@@ -17,6 +17,7 @@ echo.
 
 echo Moving folders...
 echo.
+xcopy /E /I /Y .\voice ..\StreamingAssets\SE
 xcopy /E /I /Y .\SE ..\StreamingAssets\SE
 xcopy /E /I /Y .\Update ..\StreamingAssets\Update
 
