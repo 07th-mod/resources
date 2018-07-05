@@ -45,24 +45,8 @@ move .\mv08.mp4 ..\StreamingAssets\movies\mv08.mp4
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
-
-echo Deleting useless files..."
-echo.
-rmdir /S /Q .\CG
-rmdir /S /Q .\CGAlt
-rmdir /S /Q .\StreamingAssets
-rmdir /S /Q .\voice
-rmdir /S /Q .\spectrum
-rmdir /S /Q .\Managed
-rmdir /S /Q .\Plugins
-del .\*.mp4
-del .\*.7z
-del .\*.zip
-del .\sharedassets0.assets*
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
-cd ..
 
 echo All done, finishing in three seconds...
-rmdir /S /Q .\temp
 
 exit

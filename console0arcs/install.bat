@@ -43,22 +43,8 @@ move .\sharedassets0.assets.resS ..\sharedassets0.assets.resS
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
-
-echo Deleting useless files...
-echo.
-rmdir /S /Q .\CG
-rmdir /S /Q .\StreamingAssets
-rmdir /S /Q .\voice
-rmdir /S /Q .\Managed
-rmdir /S /Q .\SE
-rmdir /S /Q .\BGM
-del .\*.zip
-del .\*.7z
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
-del .\sharedassets0.assets*
-cd ..
 
 echo All done, finishing in three seconds...
-rmdir /S /Q .\temp
 
 exit
