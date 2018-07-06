@@ -37,8 +37,8 @@ rem xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
 xcopy /E /I /Y .\CG ..\StreamingAssets\CG
 xcopy /E /I /Y .\voice ..\StreamingAssets\voice
 xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
-move .\sharedassets0.assets ..\sharedassets0.assets
-move .\sharedassets0.assets.resS ..\sharedassets0.assets.resS
+move .\TsumiUI-Windows\sharedassets0.assets ..\sharedassets0.assets
+move .\TsumiUI-Windows\sharedassets0.assets.resS ..\sharedassets0.assets.resS
 mkdir ..\StreamingAssets\BGMAlt
 mkdir ..\StreamingAssets\voiceAlt
 mkdir ..\StreamingAssets\SEAlt
