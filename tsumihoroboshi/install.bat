@@ -4,7 +4,7 @@ set version=v0.5.0
 
 echo Downloading graphics patch... (1 of 3)
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-CGAlt.7z
+rem .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-CGAlt.7z
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-UI.7z
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-Movie.7z
 
@@ -19,7 +19,7 @@ echo.
 echo Extracting files...
 echo.
 .\7za.exe x Tsumihoroboshi-CG.7z -aoa
-.\7za.exe x Tsumihoroboshi-CGAlt.7z -aoa
+rem .\7za.exe x Tsumihoroboshi-CGAlt.7z -aoa
 .\7za.exe x Tsumihoroboshi-Voices.7z -aoa
 .\7za.exe x Tsumihoroboshi.Voice.and.Graphics.Patch.*.zip -aoa
 .\7za.exe x Tsumihoroboshi-UI.7z -aoa
@@ -33,7 +33,7 @@ echo Moving folders...
 echo.
 xcopy /E /I /Y .\Managed ..\Managed
 xcopy /E /I /Y .\Plugins ..\Plugins
-xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
+rem xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
 xcopy /E /I /Y .\CG ..\StreamingAssets\CG
 xcopy /E /I /Y .\voice ..\StreamingAssets\voice
 xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
