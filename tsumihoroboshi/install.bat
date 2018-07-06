@@ -14,7 +14,7 @@ echo.
 
 echo Downloading patch... (3 of 3)
 echo.
-\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/Tsumihoroboshi/releases/download/%version%/Tsumihoroboshi.Voice.and.Graphics.Patch.%version%.zip
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/Tsumihoroboshi/releases/download/%version%/Tsumihoroboshi.Voice.and.Graphics.Patch.%version%.zip
 
 echo Extracting files...
 echo.
