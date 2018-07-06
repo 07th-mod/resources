@@ -36,6 +36,7 @@ xcopy /E /I /Y .\Plugins ..\Plugins
 rem xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
 xcopy /E /I /Y .\CG ..\StreamingAssets\CG
 xcopy /E /I /Y .\voice ..\StreamingAssets\voice
+xcopy /E /I /Y .\spectrum ..\StreamingAssets\spectrum
 xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
 move .\TsumiUI-Windows\sharedassets0.assets ..\sharedassets0.assets
 move .\TsumiUI-Windows\sharedassets0.assets.resS ..\sharedassets0.assets.resS
