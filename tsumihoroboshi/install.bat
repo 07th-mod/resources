@@ -3,14 +3,14 @@
 set version=v0.5.1
 
 echo Downloading graphics patch... (1 of 3)
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://gitlab.com/ItaloKnox/tsumihoroboshi/raw/master/Tsumihoroboshi-CG.7z
 rem .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-CGAlt.7z
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-UI.7z
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tsumihoroboshi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://gitlab.com/ItaloKnox/tsumihoroboshi/raw/master/Tsumihoroboshi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.
