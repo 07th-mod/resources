@@ -32,6 +32,7 @@ ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
 echo Moving folders...
 echo.
 xcopy /E /I /Y .\Managed ..\Managed
+xcopy /E /I /Y .\Plugins ..\Plugins
 xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
 xcopy /E /I /Y .\CG ..\StreamingAssets\CG
 xcopy /E /I /Y .\voice ..\StreamingAssets\voice
