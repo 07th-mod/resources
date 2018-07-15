@@ -1392,27 +1392,8 @@
     <url>https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Voices.7z</url>
   </file>
 
-  <file name="Umineko-Update-04_2018.zip">
-    <size>62158960</size>
-    <hash type="sha-1">a8ca9aa2c5c5b038dd44002547a0716935b19362</hash>
-    <pieces length="4194304" type="sha-1">
-        <hash>6c2431d1c2d9acf895289db0b54f416212a07d33</hash>
-        <hash>4ba2d81da8123593741eb65177b6de493282d2fc</hash>
-        <hash>5c5f6d37b16993a9c6e23ae40100cd840780f712</hash>
-        <hash>259182d14e970047a5d4886bf3226f69b7e5fc41</hash>
-        <hash>99a656931c894f63a5e0e5a07ce6bf9adb3a756b</hash>
-        <hash>4c03451c02e7b57ab0baafcff42f14864f6bbf97</hash>
-        <hash>7cff724ee444cf44442d0414180f3bd67648b876</hash>
-        <hash>e05f2163e31cf470e9f915c930f1a96205131f07</hash>
-        <hash>5a85e42b8cd9234dd88f2331c0e335fa9ddb28b7</hash>
-        <hash>dc87ddca98a3051a5984d91a3648b4f8f9f5da0a</hash>
-        <hash>bbfbda1568bee21c3d0d1bd19d87fe25bf3edbe4</hash>
-        <hash>ab37d908445bb1d0d764b58ec2f5334a05664753</hash>
-        <hash>052b004ef7335d63cbddf4d64e3b729217ac5722</hash>
-        <hash>8261d1443716439f00469bf55c425d2513eda6c6</hash>
-        <hash>9d171ecd5f45ee8bbd6c1175d5fa309fd35d7a47</hash>
-    </pieces>
-    <url>https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Update-04_2018.zip</url>
+  <file name="Umineko-Update-v5_2018_07_15.zip">
+    <url>https://github.com/07th-mod/resources/releases/download/Beato/Umineko-Update-v5_2018_07_15.zip</url>
   </file>
 
   <file name="Umineko1to4.exe">
