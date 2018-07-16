@@ -16,13 +16,13 @@ aria2c --file-allocation=none --continue=true -x 8 https://github.com/07th-mod/r
 mv 0.utf 0.u
 7z x Umineko-Graphics.zip.001 -aoa
 7z x Umineko-Voices.7z
-7z x Umineko-Update-04_2018.zip -aoa
+7z x Umineko-Update* -aoa
 7z x Umineko1to4.app.zip -aoa
 
 cp -na "en\bmp\background\r_click" "en\bmp"
 
 rm -rf ./Umineko-Graphics.zip*
 rm -rf ./Umineko-Voices.7z
-rm -rf ./Umineko-Update-*.zip
+rm -rf ./Umineko-Update*
 rm -rf ./Umineko1to4.app.zip
 rm -rf ./Umineko1to4_for_LINUX.zip
