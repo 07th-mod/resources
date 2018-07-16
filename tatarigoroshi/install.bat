@@ -4,19 +4,19 @@ set version=v5.2.1
 
 echo Downloading graphics patch... (1 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-CGAlt.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Wata_Tata-Movie.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Tatarigoroshi-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Tatarigoroshi-CGAlt.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Wata_Tata-Movie.7z
 
 if exist ..\..\steam_api.dll (
-    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI.7z
+    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Tatarigoroshi-UI.7z
 ) else (
-    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-UI_MG.7z
+    .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Tatarigoroshi-UI_MG.7z
 )
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Hanyuu/Tatarigoroshi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 http://07th.nijino-yu.me/current/Tatarigoroshi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.
