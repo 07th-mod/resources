@@ -62,7 +62,7 @@ mv temp/0.utf 0.u
 mv temp/Umineko1to4 Umineko1to4
 7za x temp/Umineko-Graphics.zip.001 -aoa
 7za x temp/Umineko-Voices.7z
-7za x temp/Umineko-Update-04_2018.zip -aoa
+7za x temp/Umineko-Update* -aoa
 cp -na "en/bmp/background/r_click" "en/bmp"
 
 chmod +x Umineko1to4
