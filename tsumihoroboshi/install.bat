@@ -1,6 +1,6 @@
 @echo off
 
-set version=v0.5.1
+set version=v1.0.0
 
 echo Downloading graphics patch... (1 of 3)
 .\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Tsumihoroboshi-CG.7z
