@@ -4,7 +4,7 @@ set version=v0.5.2
 
 echo Downloading voice patch... (1 of 2)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/resources/releases/download/Nipah/Tatarigoroshi-Voices.zip
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/nipah/Tatarigoroshi-Voices.zip
 
 echo Downloading patch... (2 of 2)
 echo.
