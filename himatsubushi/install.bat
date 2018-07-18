@@ -4,14 +4,14 @@ set version=v4.2.0
 
 echo Downloading graphics patch... (1 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Himatsubushi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Himatsubushi-CGAlt.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Himatsubushi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Himatsubushi-Movie.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-CGAlt.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-UI.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Himatsubushi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.

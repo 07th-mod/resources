@@ -3,14 +3,14 @@
 set version=v4.1.2
 
 echo Downloading graphics patch... (1 of 3)
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Meakashi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Meakashi-CGAlt.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Meakashi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Meakashi-Movie.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Meakashi-CG.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Meakashi-CGAlt.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Meakashi-UI.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Meakashi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 16 https://07th-mod.com/hanyuu/Meakashi-Voices.7z
+.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Meakashi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.
