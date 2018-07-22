@@ -1,51 +1,40 @@
 @echo off
 
-set version=v4.2.0
+rem set version=v4.2.0
+
+cd ..
 
 echo Downloading graphics patch... (1 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-CGAlt.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-Movie.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-CG.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-CGAlt.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-UI.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Himatsubushi-Voices.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/himatsubushi/releases/download/%version%/Himatsubushi.Voice.and.Graphics.Patch.%version%.zip
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 http://07th-mod.com/latest.php?repository=himatsubushi
+
+echo Preparing files...
+echo.
+del .\HigurashiEp04\StreamingAssets\CompiledUpdateScripts\*.mg
+ren .\HigurashiEp04_Data\sharedassets0.assets sharedassets0.assets.backup
+ren .\HigurashiEp04_Data\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+rmdir /S /Q .\HigurashiEp04_Data\StreamingAssets\CG
+rmdir /S /Q .\HigurashiEp04_Data\StreamingAssets\CGAlt
 
 echo Extracting files...
 echo.
-.\7za.exe x Himatsubushi-CG.7z -aoa
-.\7za.exe x Himatsubushi-CGAlt.7z -aoa
-.\7za.exe x Himatsubushi-Voices.7z -aoa
-.\7za.exe x Himatsubushi.Voice.and.Graphics.Patch.*.zip -aoa
-.\7za.exe x Himatsubushi-UI*.7z
-.\7za.exe x Himatsubushi-Movie.7z
-rmdir /S /Q ..\StreamingAssets\CG
-rmdir /S /Q ..\StreamingAssets\CGAlt
-mkdir ..\StreamingAssets\movies
-ren ..\sharedassets0.assets sharedassets0.assets.backup
-ren ..\sharedassets0.assets.resS sharedassets0.assets.resS.backup
-
-echo Moving folders...
-echo.
-xcopy /E /I /Y .\Managed ..\Managed
-xcopy /E /I /Y .\Plugins ..\Plugins
-xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
-xcopy /E /I /Y .\CG ..\StreamingAssets\CG
-xcopy /E /I /Y .\voice ..\StreamingAssets\voice
-xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
-move .\sharedassets0.assets ..\sharedassets0.assets
-move .\sharedassets0.assets.resS ..\sharedassets0.assets.resS
-move .\mv08.mp4 ..\StreamingAssets\movies\mv08.mp4
-mkdir ..\StreamingAssets\BGMAlt
-mkdir ..\StreamingAssets\voiceAlt
-mkdir ..\StreamingAssets\SEAlt
-del ..\StreamingAssets\CompiledUpdateScripts\*.mg
+.\temp\7za.exe x *-CGAlt.7z -aoa
+.\temp\7za.exe x *-CG.7z -aoa
+.\temp\7za.exe x *-Voices.7z -aoa
+.\temp\7za.exe x *.Voice.and.Graphics.Patch.*.zip -aoa
+.\temp\7za.exe x *-UI.7z -aoa
+.\temp\7za.exe x *-Movie.7z -aoa
 
 echo All done, finishing in three seconds...
 

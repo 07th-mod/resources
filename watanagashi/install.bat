@@ -1,50 +1,40 @@
 @echo off
 
-set version=v4.2.0
+rem set version=v4.2.0
+
+cd ..
 
 echo Downloading graphics patch... (1 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Watanagashi-CG.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Watanagashi-CGAlt.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Watanagashi-UI.7z
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Wata_Tata-Movie.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Watanagashi-CG.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Watanagashi-CGAlt.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Watanagashi-UI.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Watanagashi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/hanyuu/Watanagashi-Voices.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Watanagashi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.
-.\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://github.com/07th-mod/watanagashi/releases/download/%version%/Watanagashi.Voice.and.Graphics.Patch.%version%.zip
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 http://07th-mod.com/latest.php?repository=watanagashi
+
+echo Preparing files...
+echo.
+del .\HigurashiEp02\StreamingAssets\CompiledUpdateScripts\*.mg
+ren .\HigurashiEp02_Data\sharedassets0.assets sharedassets0.assets.backup
+rem ren .\HigurashiEp02_Data\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+rmdir /S /Q .\HigurashiEp02_Data\StreamingAssets\CG
+rmdir /S /Q .\HigurashiEp02_Data\StreamingAssets\CGAlt
 
 echo Extracting files...
 echo.
-.\7za.exe x Watanagashi-CGAlt.7z -aoa
-.\7za.exe x Watanagashi-CG.7z -aoa
-.\7za.exe x Watanagashi-Voices.7z -aoa
-.\7za.exe x Watanagashi.Voice.and.Graphics.Patch.*.zip -aoa
-.\7za.exe x Watanagashi-UI.7z -aoa
-.\7za.exe x Wata_Tata-Movie.7z -aoa
-rmdir /S /Q ..\StreamingAssets\CG
-rmdir /S /Q ..\StreamingAssets\CGAlt
-mkdir ..\StreamingAssets\movies
-ren ..\sharedassets0.assets sharedassets0.assets.backup
-
-echo Moving folders...
-echo.
-xcopy /E /I /Y .\Managed ..\Managed
-xcopy /E /I /Y .\Plugins ..\Plugins
-xcopy /E /I /Y .\CGAlt ..\StreamingAssets\CGAlt
-xcopy /E /I /Y .\CG ..\StreamingAssets\CG
-xcopy /E /I /Y .\voice ..\StreamingAssets\voice
-xcopy /E /I /Y .\spectrum ..\StreamingAssets\spectrum
-xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
-move .\sharedassets0.assets ..\sharedassets0.assets
-move .\mv07.mp4 ..\StreamingAssets\movies\mv07.mp4
-mkdir ..\StreamingAssets\BGMAlt
-mkdir ..\StreamingAssets\voiceAlt
-mkdir ..\StreamingAssets\SEAlt
-del ..\StreamingAssets\CompiledUpdateScripts\*.mg
+.\temp\7za.exe x *-CGAlt.7z -aoa
+.\temp\7za.exe x *-CG.7z -aoa
+.\temp\7za.exe x *-Voices.7z -aoa
+.\temp\7za.exe x *.Voice.and.Graphics.Patch.*.zip -aoa
+.\temp\7za.exe x *-UI.7z -aoa
+.\temp\7za.exe x *-Movie.7z -aoa
 
 echo All done, finishing in three seconds...
 

@@ -1,5 +1,5 @@
 @echo off
 
-cd ..
 echo Deleted all installation files
+del *.7z
 rmdir /S /Q .\temp
