@@ -5,14 +5,14 @@ rem set version=v1.0.0
 cd ..
 
 echo Downloading graphics patch... (1 of 3)
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Tsumihoroboshi-CG.7z
-rem .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Tsumihoroboshi-CGAlt.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Tsumihoroboshi-UI.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Tsumihoroboshi-Movie.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tsumihoroboshi-CG.7z
+rem .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tsumihoroboshi-CGAlt.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tsumihoroboshi-UI.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tsumihoroboshi-Movie.7z
 
 echo Downloading voice patch... (2 of 3)
 echo.
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Tsumihoroboshi-Voices.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tsumihoroboshi-Voices.7z
 
 echo Downloading patch... (3 of 3)
 echo.

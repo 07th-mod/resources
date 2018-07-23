@@ -6,14 +6,14 @@ cd ..
 
 echo Downloading graphics patch... (1 of 3)
 echo.
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/ConsoleArcs-CG.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/Himatsubushi-UI.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/ConsoleArcs-CG.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Himatsubushi-UI.7z
 
 echo Downloading voices and sounds... (2 of 3)
 echo.
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/ConsoleArcs-BGM.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/ConsoleArcs-Voices.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 https://07th-mod.com/rikachama/ConsoleArcs-SE.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/ConsoleArcs-BGM.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/ConsoleArcs-Voices.7z
+.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/ConsoleArcs-SE.7z
 
 echo Downloading patch... (3 of 3)
 echo.
