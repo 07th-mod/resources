@@ -506,7 +506,7 @@
         <hash>9a3320d93d29cd42572599e37e19c749fb2939b0</hash>
         <hash>39c32a265966c2dadff34e989e7561011ec0c89f</hash>
     </pieces>
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.001</url>
+    <url>https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.001</url>
   </file>
 
   <file name="UminekoChiru-Graphics.7z.002">
@@ -1014,7 +1014,7 @@
         <hash>44db8ef28fad1760ae1caa51c5c3f7010b671cf7</hash>
         <hash>b489a374cddc44ecab05a49989daf082e84a7837</hash>
     </pieces>
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.002</url>
+    <url>https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.002</url>
   </file>
 
   <file name="UminekoChiru-Graphics.7z.003">
@@ -1520,7 +1520,7 @@
         <hash>6bb1c0e348e6184658527b8218e8c4f82f0ef4da</hash>
         <hash>c8511f187019e4ac7597b7ebadebd7d05127e68f</hash>
     </pieces>
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Graphics.7z.003</url>
+    <url>https://07th-mod.com/Bern/UminekoChiru-Graphics.7z.003</url>
   </file>
 
   <file name="UminekoChiru-Voices.7z">
@@ -1888,11 +1888,11 @@
         <hash>5c08675ec8422d1fa4c58bad60769595aeea68e5</hash>
         <hash>40640cf054e5f11b0753f4200d50bcb70465bddb</hash>
     </pieces>
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Voices.7z</url>
+    <url>https://07th-mod.com/Bern/UminekoChiru-Voices.7z</url>
   </file>
 
   <file name="Umineko5to8.exe">
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/Umineko5to8.exe</url>
+    <url>https://07th-mod.com/Bern/Umineko5to8.exe</url>
   </file>
 
   <file name="0.utf">
@@ -1900,7 +1900,7 @@
   </file>
 
   <file name="UminekoChiru-Update-v3_2018_07_15.zip">
-    <url>https://github.com/07th-mod/resources/releases/download/Bern/UminekoChiru-Update-v3_2018_07_15.zip</url>
+    <url>https://07th-mod.com/Bern/UminekoChiru-Update-v3_2018_07_15.zip</url>
   </file>
 
 </metalink>
