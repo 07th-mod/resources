@@ -24,17 +24,8 @@ xcopy /E /I /Y .\SE ..\HigurashiEp0*_Data\StreamingAssets\SE
 xcopy /E /I /Y .\Update ..\HigurashiEp0*_Data\StreamingAssets\Update
 xcopy /E /I /Y .\HigurashiEp0*_Data\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
 
-echo Deleting useless files...
-echo.
-del .\*.zip
-rmdir /S /Q .\SE
-rmdir /S /Q .\voice
-rmdir /S /Q .\Update
-rmdir /S /Q .\HigurashiEp0*_Data
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
-cd ..
 
 echo All done, finishing in three seconds...
-rmdir /S /Q .\temp
 
 exit
