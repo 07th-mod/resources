@@ -29,7 +29,7 @@ echo.
 del .\*.zip
 rmdir /S /Q .\SE
 rmdir /S /Q .\Update
-rdmir /S /Q .\HigurashiEp0*_Data
+rmdir /S /Q .\HigurashiEp0*_Data
 rmdir /S /Q .\voice
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
 cd ..
