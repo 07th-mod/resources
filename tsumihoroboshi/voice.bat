@@ -19,16 +19,18 @@ echo.
 
 echo Moving folders...
 echo.
-xcopy /E /I /Y .\voice ..\StreamingAssets\SE
-xcopy /E /I /Y .\SE ..\StreamingAssets\SE
-xcopy /E /I /Y .\StreamingAssets ..\StreamingAssets
-xcopy /E /I /Y .\HigurashiEp0*_Data\StreamingAssets ..\StreamingAssets
+xcopy /E /I /Y .\voice ..\HigurashiEp0*_Data\StreamingAssets\SE
+xcopy /E /I /Y .\SE ..\HigurashiEp0*_Data\StreamingAssets\SE
+xcopy /E /I /Y .\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
+xcopy /E /I /Y .\HigurashiEp0*_Data\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
 
 echo Deleting useless files...
 echo.
 del .\*.zip
 rmdir /S /Q .\SE
+rmdir /S /Q .\voice
 rmdir /S /Q .\StreamingAssets
+rmdir /S /Q .\HigurashiEp0*_Data
 del ..\StreamingAssets\CompiledUpdateScripts\*.mg
 cd ..
 
