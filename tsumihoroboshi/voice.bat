@@ -24,7 +24,7 @@ xcopy /E /I /Y .\SE ..\HigurashiEp0*_Data\StreamingAssets\SE
 xcopy /E /I /Y .\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
 xcopy /E /I /Y .\HigurashiEp0*_Data\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
 
-del ..\StreamingAssets\CompiledUpdateScripts\*.mg
+del ..\HigurashiEp0*_DataStreamingAssets\CompiledUpdateScripts\*.mg
 
 echo All done, finishing in three seconds...
 
