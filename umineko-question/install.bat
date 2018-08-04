@@ -37,6 +37,8 @@ echo Downloading and verifying all files. You can close and reopen this at any t
 echo Please ignore any Checksum Warnings - they always occur when a file is first downloaded or the download is resumed.
 echo.
 
+del ".\temp\*.aria2"
+
 ::aria2c won't retry if it gets a 403 code, so force it to retry continously
 :downloadLoop    
 .\temp\aria2c --console-log-level=error --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-question/umi_full.meta4 --dir=temp || (timeout /t 3 && goto :downloadLoop)
