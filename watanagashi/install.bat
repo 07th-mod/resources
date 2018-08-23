@@ -21,9 +21,16 @@ echo.
 
 echo Preparing files...
 echo.
-del .\HigurashiEp02\StreamingAssets\CompiledUpdateScripts\*.mg
-ren .\HigurashiEp02_Data\sharedassets0.assets sharedassets0.assets.backup
-rem ren .\HigurashiEp02_Data\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+del .\HigurashiEp02_Data\StreamingAssets\CompiledUpdateScripts\*.mg
+
+if exist .\HigurashiEp02_Data\sharedassets0.assets.backup (
+    goto skip
+) else (
+    ren .\HigurashiEp02_Data\sharedassets0.assets sharedassets0.assets.backup
+    rem ren .\HigurashiEp02_Data\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+)
+
+:skip
 rmdir /S /Q .\HigurashiEp02_Data\StreamingAssets\CG
 rmdir /S /Q .\HigurashiEp02_Data\StreamingAssets\CGAlt
 
