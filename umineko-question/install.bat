@@ -49,8 +49,13 @@ copy /Y temp\Umineko1to4.exe .
 copy /Y temp\0.utf 0.u
 echo.
 
-echo Renaming saves folder...
-ren saves mysav || echo INFO - Couldn't rename saves folder - continuing install anyway
+echo Renaming saves folder and copying global.sav and envdata ...
+if not exist mysav (
+    mkdir mysav
+    cp saves/global.sav mysav/global.sav
+    cp saves/envdata mysav/envdata
+)
+ren saves saves_from_before_patching || echo INFO - Couldn't rename saves folder - continuing install anyway
 echo.
 
 echo Extracting Graphics...
