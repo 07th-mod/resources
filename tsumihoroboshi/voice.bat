@@ -19,12 +19,12 @@ echo.
 
 echo Moving folders...
 echo.
-xcopy /E /I /Y .\voice ..\HigurashiEp0*_Data\StreamingAssets\SE
-xcopy /E /I /Y .\SE ..\HigurashiEp0*_Data\StreamingAssets\SE
-xcopy /E /I /Y .\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
-xcopy /E /I /Y .\HigurashiEp0*_Data\StreamingAssets ..\HigurashiEp0*_Data\StreamingAssets
+xcopy /E /I /Y .\voice ..\HigurashiEp06_Data\StreamingAssets\SE
+xcopy /E /I /Y .\SE ..\HigurashiEp06_Data\StreamingAssets\SE
+xcopy /E /I /Y .\StreamingAssets ..\HigurashiEp06_Data\StreamingAssets
+xcopy /E /I /Y .\HigurashiEp06_Data\StreamingAssets ..\HigurashiEp06_Data\StreamingAssets
 
-del ..\HigurashiEp0*_DataStreamingAssets\CompiledUpdateScripts\*.mg
+del ..\HigurashiEp06_DataStreamingAssets\CompiledUpdateScripts\*.mg
 
 echo All done, finishing in three seconds...
 
