@@ -14,6 +14,12 @@ mv 0.utf 0.u
 7z x UminekoChiru-Voices.7z
 7z x Umineko5to8.app.zip -aoa
 
+# if file is extracted, MacOSX quarantines it into a special read-only folder so it can't access the game files
+# the below line _might_ fix the issue by disabling the quarantine.
+# see http://lapcatsoftware.com/articles/app-translocation.html
+# use sudo fs_usage -wb | grep umineko to diagnose this issue
+xattr -d com.apple.quarantine Umineko5to8.app
+
 echo Please verify the game works correctly. If it works correctly, you can delete or move UminekoChiru-Graphics.zip.00X, UminekoChiru-Voices.7z, and UminekoChiru-Update.zip
 echo Regarding SAVES - Saves are not compatible with the stock game, BUT you can get your chapter progress back.
 echo To do this, copy [global.sav] and [envdata] from [saves_from_before_patching] to the [mysav] folder.

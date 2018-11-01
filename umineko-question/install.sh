@@ -14,6 +14,12 @@ mv 0.utf 0.u
 7z x Umineko-Update* -aoa
 7z x Umineko1to4.app.zip -aoa
 
+# if file is extracted, MacOSX quarantines it into a special read-only folder so it can't access the game files
+# the below line _might_ fix the issue by disabling the quarantine.
+# see http://lapcatsoftware.com/articles/app-translocation.html
+# use sudo fs_usage -wb | grep umineko to diagnose this issue
+xattr -d com.apple.quarantine Umineko1to4.app
+
 cp -na "en\bmp\background\r_click" "en\bmp"
 
 echo Please verify the game works correctly. If it works correctly, you can delete or move Umineko-Graphics.zip.00X, Umineko-Voices.7z, and Umineko-Update.zip
