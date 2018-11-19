@@ -1,4 +1,4 @@
-import os, shutil, platform
+import os, shutil, platform, glob
 from subprocess import call
 
 def systemUI():
@@ -20,21 +20,20 @@ def backupUI():
     except FileExistsError:
         pass
 
-def cleanCG():
+def cleanOld():
     old_CG = "./HigurashiEp03_Data/StreamingAssets/CG"
     old_CGAlt = "./HigurashiEp03_Data/StreamingAssets/CGAlt"
-    old_CompiledUpdate = "./HigurashiEp03_Data/StreamingAssets/CompiledUpdateScripts"
+
+    for mg in glob.glob('./HigurashiEp03_Data/StreamingAssets/CompiledUpdateScripts/*.mg'):
+            os.remove(mg)
     
-    if os.path.isdir(old_CG) and os.path.isdir(old_CGAlt):
+    if os.path.isdir(old_CG):
         shutil.rmtree(old_CG)
+        
+    if os.path.isdir(old_CGAlt):
         shutil.rmtree(old_CGAlt)
 
-    for file in os.listdir("./HigurashiEp03_Data/StreamingAssets/CompiledUpdateScripts"):
-        file_path = os.path.join(old_CompiledUpdate, file)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-
-def aria2c():
+def download():
     arguments = [
         r'./temp/aria2c',
         '--file-allocation=none',
@@ -59,16 +58,16 @@ def extractFiles():
         "*-UI.7z",
         "*-Movie.7z",
     ]
-    for x in range(0,6):
-        call([r'.\temp\7za.exe','x', files[x], '-aoa'])
+    for file in files:
+        call([r'.\tmp\7za.exe', 'x', file, '-aoa'])
 
 print("Downloading patch files...")
 systemUI()
-aria2c()
+download()
 print("Backing up UI...")
 backupUI()
 print("Removing unnecessary folders and files...")
-cleanCG()
+cleanOld()
 print("Installing patch...")
 extractFiles()
 
