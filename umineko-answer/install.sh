@@ -9,7 +9,7 @@ aria2c --file-allocation=none --continue=true -x 8 https://07th-mod.com/Bern/Umi
 aria2c --file-allocation=none --continue=true --check-integrity=true --max-concurrent-downloads=1 --retry-wait 5 -x 8 --follow-metalink=mem https://github.com/07th-mod/resources/raw/master/umineko-answer/chiru_full.meta4
 
 mv 0.utf 0.u
-7z x UminekoChiru-Graphics.7z.001 -aoa
+7z x UminekoChiru-Graphics.7z -aoa
 7z x UminekoChiru-Update* -aoa
 7z x UminekoChiru-Voices.7z
 7z x Umineko5to8.app.zip -aoa

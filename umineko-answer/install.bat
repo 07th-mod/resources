@@ -65,7 +65,7 @@ ren saves saves_from_before_patching || echo INFO - Couldn't rename saves folder
 echo.
 
 echo Extracting Graphics...
-.\temp\7za.exe x temp\UminekoChiru-Graphics.7z.001 -aoa -bsp1 || echo ERROR during graphics extraction. Check the game files are not in use. && goto :installFailed
+.\temp\7za.exe x temp\UminekoChiru-Graphics.7z -aoa -bsp1 || echo ERROR during graphics extraction. Check the game files are not in use. && goto :installFailed
 
 echo Extracting Voices...
 .\temp\7za.exe x temp\UminekoChiru-Voices.7z -aoa -bsp1 || echo ERROR during voices extraction. Check the game files are not in use. && goto :installFailed
