@@ -38,6 +38,12 @@ echo Please ignore any Checksum Warnings - they always occur when a file is firs
 echo.
 
 del ".\temp\*.aria2"
+::delete all non-checksummed files
+del "temp\*.utf"
+del "temp\*.u"
+del "temp\Umineko-Update*"
+del "temp\Umineko1to4.exe"
+del "temp\Umineko5to8.exe"
 
 ::aria2c won't retry if it gets a 403 code, so force it to retry continously
 :downloadLoop    
