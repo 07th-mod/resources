@@ -3,9 +3,9 @@ from subprocess import call
 
 def systemUI():
     if platform.system() == 'Windows':
-        call([r'.\temp\aria2c', '--file-allocation=none', '--continue=true', '--retry-wait=5', '-m 0', '-x 8', '-s 8', 'https://07th-mod.com/rikachama/Watanagashi-UI.7z'])
+        call([r'aria2c', '--file-allocation=none', '--continue=true', '--retry-wait=5', '-m 0', '-x 8', '-s 8', 'https://07th-mod.com/rikachama/Watanagashi-UI.7z'])
     else:
-        call([r'.\temp\aria2c', '--file-allocation=none', '--continue=true', '--retry-wait=5', '-m 0', '-x 8', '-s 8', 'https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z'])       
+        call([r'aria2c', '--file-allocation=none', '--continue=true', '--retry-wait=5', '-m 0', '-x 8', '-s 8', 'https://07th-mod.com/rikachama/Watanagashi-UI_UNIX.7z'])       
 
 def backupUI():
     try:
@@ -29,7 +29,7 @@ def cleanOld():
 
 def download():
     arguments = [
-        r'./temp/aria2c',
+        r'aria2c',
         '--file-allocation=none',
         '--continue=true',
         '--retry-wait=5',
@@ -53,7 +53,7 @@ def extractFiles():
         "*-Movie.7z",
     ]
     for file in files:
-        call([r'.\tmp\7za.exe', 'x', file, '-aoa'])
+        call([r'7z', 'x', file, '-aoa'])
 
 print("Downloading patch files...")
 systemUI()
