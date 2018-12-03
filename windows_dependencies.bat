@@ -57,7 +57,31 @@ aria2c --version >nul 2>&1 && (
     echo installed aria2c
 )
 
-::run the python script
-python "install.py"
+::Try to run the python script.
+::On failure, tell the user to run installer again to refresh environment variables
+python --version >nul 2>&1 && (
+    python "install.py"
+) || (
+    echo .
+    echo .
+    echo .
+    echo .
+    echo .
+    echo .
+    echo .
+    echo .
+    echo -----------------------------------------------------------------------
+    echo WARNING: Installer Needs Restart
+    echo -----------------------------------------------------------------------
+    echo Please re-run this batch file.
+    echo Right-click this program and click "Run as Administrator."
+    echo .
+    echo .
+    echo If you have this warning more than once, your PATH variable is probably
+    echo not set correctly. Please download and install python, MAKING SURE TO
+    echo TICK THE BOX "Add Python 3 to PATH": https://www.python.org/downloads
+    echo If still not working, contact us on our discord server.
+    echo -----------------------------------------------------------------------
+)
 
 pause
