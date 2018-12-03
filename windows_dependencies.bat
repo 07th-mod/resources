@@ -5,9 +5,21 @@
 @setlocal enableextensions
 @cd /d "%~dp0"
 
+::Check for administrator permissions https://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights
+net session >nul 2>&1
+if NOT %errorLevel% == 0 (
+    echo Error: Installer Stopped - Not in Administator Mode. 
+    echo ------------------------------------------------------------------------------
+    echo To fix this, right click this program and click "Run as Administrator."
+    echo ------------------------------------------------------------------------------
+    pause
+    exit /b 1
+) 
+
 ::Print current directory for debugging
-echo current directory is
-cd
+echo The Current Directory is [%cd%]
+echo The Batch File is located at [%~f0]
+
 
 ::Check whether various tools are installed and install if necessary
 choco --version >nul 2>&1 && (
