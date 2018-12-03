@@ -35,7 +35,7 @@ python --version >nul 2>&1 && (
 ) || (
     echo Python is not installed
     echo installing Python
-    choco install python -y
+    choco install python -y --force
     echo installed Python
 )
 
@@ -44,7 +44,7 @@ python --version >nul 2>&1 && (
 ) || (
     echo 7zip is not installed
     echo installing 7zip
-    choco install 7zip.portable -y
+    choco install 7zip.portable -y --force
     echo installed 7zip
 )
 
@@ -53,7 +53,7 @@ aria2c --version >nul 2>&1 && (
 ) || (
     echo aria2 is not installed
     echo installing aria2
-    choco install aria2 -y
+    choco install aria2 -y --force
     echo installed aria2c
 )
 
