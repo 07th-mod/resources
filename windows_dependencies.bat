@@ -57,6 +57,12 @@ aria2c --version >nul 2>&1 && (
     echo installed aria2c
 )
 
+::Refresh the environment variables so python is added to path immediately.
+::NOTE: when calling another .cmd or .bat file, you must use 'call' to call it,
+::or else the original batch file will terminate when the child batch file
+::terminates. refreshenv is implmented in chocolatey as a .cmd file.
+call refreshenv
+
 ::Try to run the python script.
 ::On failure, tell the user to run installer again to refresh environment variables
 python --version >nul 2>&1 && (
