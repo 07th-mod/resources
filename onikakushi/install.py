@@ -28,8 +28,8 @@ def cleanOld():
         if os.path.isdir(old_CGAlt):
             shutil.rmtree(old_CGAlt)
     else:
-        old_CG = "./Data/StreamingAssets/CG"
-        old_CGAlt = "./Data/StreamingAssets/CGAlt"
+        old_CG = "./Contents/Resources/Data/StreamingAssets/CG"
+        old_CGAlt = "./Contents/Resources/Data/StreamingAssets/CGAlt"
 
         for mg in glob.glob('./Data/StreamingAssets/CompiledUpdateScripts/*.mg'):
             os.remove(mg)
@@ -76,7 +76,7 @@ def macSync()
             r'rsync',
             '-avP',
             '/Higurashi*/*',
-            './'
+            './Contents/Resources/Data/'
         ]
     
         leftovers = "./HigurashiEp01_Data"
