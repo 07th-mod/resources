@@ -15,30 +15,23 @@ def backupUI():
         pass
 
 def cleanOld():
-    if platform.system() == 'Windows' or platform.system() == 'Linux':
-        old_CG = "./HigurashiEp01_Data/StreamingAssets/CG"
-        old_CGAlt = "./HigurashiEp01_Data/StreamingAssets/CGAlt"
+    base_path = "./HigurashiEp01_Data"
 
-        for mg in glob.glob('./HigurashiEp01_Data/StreamingAssets/CompiledUpdateScripts/*.mg'):
-            os.remove(mg)
+    if platform.system() == 'Darwin':
+        base_path = "./Data"
 
-        if os.path.isdir(old_CG):
-            shutil.rmtree(old_CG)
+    old_CG = os.path.join(base_path, "StreamingAssets/CG")
+    old_CGAlt = os.path.join(base_path, "StreamingAssets/CGAlt")
+    compiled_scripts_pattern = os.path.join(base_path, "StreamingAssets/CompiledUpdateScripts/*.mg") 
 
-        if os.path.isdir(old_CGAlt):
-            shutil.rmtree(old_CGAlt)
-    else:
-        old_CG = "./Contents/Resources/Data/StreamingAssets/CG"
-        old_CGAlt = "./Contents/Resources/Data/StreamingAssets/CGAlt"
+    for mg in glob.glob(compiled_scripts_pattern):
+        os.remove(mg)
 
-        for mg in glob.glob('./Data/StreamingAssets/CompiledUpdateScripts/*.mg'):
-            os.remove(mg)
+    if os.path.isdir(old_CG):
+        shutil.rmtree(old_CG)
 
-        if os.path.isdir(old_CG):
-            shutil.rmtree(old_CG)
-
-        if os.path.isdir(old_CGAlt):
-            shutil.rmtree(old_CGAlt)
+    if os.path.isdir(old_CGAlt):
+        shutil.rmtree(old_CGAlt)
 
 def download():
     arguments = [
@@ -76,7 +69,7 @@ def macSync()
             r'rsync',
             '-avP',
             '/Higurashi*/*',
-            './Contents/Resources/Data/'
+            './Contents/Resources/Data/',
         ]
     
         leftovers = "./HigurashiEp01_Data"
