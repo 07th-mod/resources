@@ -22,12 +22,18 @@ class Installer:
 			self.dataDirectory = path.join(self.directory, info["dataname"])
 		self.assetsDir = path.join(self.dataDirectory, "StreamingAssets")
 		self.info = info
+		if path.exists(path.join(self.directory, "steam_api.dll")):
+			self.isSteam = True
+		else:
+			self.isSteam = False
+
 		if path.exists("./7za"):
 			self.unzip = "./7za"
 		elif path.exists("./7z"):
 			self.unzip = "./7z"
 		else:
 			self.unzip = "7za"
+
 		if path.exists("./aria2c"):
 			self.aria = "./aria2c"
 		else:
@@ -55,9 +61,21 @@ class Installer:
 
 	def download(self):
 		if platform.system() == "Windows":
-			files = self.info["files"]["win"]
+			try:
+				files = self.info["files"]["win"]
+			except KeyError:
+				if self.isSteam:
+					files = self.info["files"]["win-steam"]
+				else:
+					files = self.info["files"]["win-mg"]
 		else:
-			files = self.info["files"]["unix"]
+			try:
+				files = self.info["files"]["unix"]
+			except KeyError:
+				if self.isSteam:
+					files = self.info["files"]["unix-steam"]
+				else:
+					files = self.info["files"]["unix-mg"]
 		try:
 			os.mkdir("Download")
 		except:
