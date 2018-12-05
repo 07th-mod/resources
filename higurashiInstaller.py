@@ -42,7 +42,7 @@ class Installer:
 			self.dataDirectory = path.join(self.directory, info["dataname"])
 
 		self.assetsDir = path.join(self.dataDirectory, "StreamingAssets")
-		
+
 		if path.exists(path.join(self.directory, "steam_api.dll")):
 			self.isSteam = True
 		else:
@@ -127,7 +127,7 @@ class Installer:
 			'-x 8',
 			'-s 8',
 			'-j 1',
-			'-d Download',
+			'-d ' + self.downloadDir,
 			'--input-file=downloadList.txt'
 		]
 		subprocess.call(arguments)
