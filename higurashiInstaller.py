@@ -202,7 +202,7 @@ if not targetName:
 	exitWithError()
 possibleMods = [x for x in gameList if x["target"] == targetName]
 if len(possibleMods) > 1:
-	modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install")
+	modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install", canOther=False)
 	mod = [x for x in possibleMods if x["name"] == modName][0]
 else:
 	mod = possibleMods[0]
