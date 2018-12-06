@@ -290,7 +290,7 @@ def findGames(modList):
 			games.append(game)
 	return games
 
-def promptChoice(choiceList, guiPrompt, textPrompt, canOther=True):
+def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
 	"""
 	Prompts the user to choose from a list
 	Currently supports using a choose GUI on mac OS and falls back to a CLI chooser on other OSes
@@ -299,6 +299,7 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=True):
 	:param str guiPrompt: The prompt to use in GUI mode
 	:param str textPrompt: The prompt to use in CLI mode.  Note that the user will be directed to select from a list of integers representing options so please mention that.
 	:param bool canOther: Whether or not to give the user an Other option, which will instruct them to give a path to an application
+	:param str textPromptWithOther: The text prompt to use if there's both options and the `Other` option available.  If `canOther` is true, `textPrompt` will be used if there are only options (so it's just Other) and this will be used otherwise.  If `canOther` is false, this will be ignored.
 	:return: The string that the user selected, or if canOther is true, possibly a path that was not in the option list
 	:rtype: str
 	"""
@@ -312,8 +313,9 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=True):
 			choice = subprocess.check_output(["osascript", "-e", "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"" + guiPrompt + "\")"]).strip().decode("utf-8")
 	else:
 		if choiceList and canOther:
-			textPrompt = textPrompt + "  Alternatively, you can input the path to it manually."
-		print(textPrompt)
+			print(textPromptWithOther)
+		else:
+			print(textPrompt)
 		for index, game in enumerate(choiceList):
 			print(str(index) + ": " + game)
 		inputted = input()
@@ -340,7 +342,13 @@ def printSupportedGames(modList):
 print("Getting latest mod info...")
 modList = getModList()
 foundGames = findGames(modList)
-gameToUse = promptChoice(foundGames, "Please choose a game to mod", "Please type the number of a game you would like to mod.")
+gameToUse = promptChoice(
+	choiceList=foundGames,
+	guiPrompt="Please choose a game to mod",
+	textPrompt="Please input the path of the game you would like to mod.",
+	textPromptWithOther="Please type the number of a game you would like to mod.  Alternatively, you can input the path to it manually.",
+	canOther=True
+)
 targetName = getGameInfo(gameToUse, modList)
 if not targetName:
 	print(gameToUse + " does not appear to be a supported higurashi game.")
@@ -348,7 +356,7 @@ if not targetName:
 	exitWithError()
 possibleMods = [x for x in modList if x["target"] == targetName]
 if len(possibleMods) > 1:
-	modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install", canOther=False)
+	modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install")
 	mod = [x for x in possibleMods if x["name"] == modName][0]
 else:
 	mod = possibleMods[0]
