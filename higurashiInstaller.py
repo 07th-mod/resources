@@ -257,6 +257,8 @@ def getGameNameFromGamePath(gamePath, modList):
 	:return: The name of the game , or None if no game was matched
 	:rtype: str or None
 	"""
+	name = None
+
 	if IS_MAC:
 		try:
 			info = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", path.join(gamePath, "Contents/Info.plist")])
@@ -272,7 +274,9 @@ def getGameNameFromGamePath(gamePath, modList):
 					break
 		except:
 			print("getGameNameFromGamePath failed on path [{}]".format(gamePath))
-			return None
+
+	if name is None:
+		return None
 
 	for mod in modList:
 		if mod["dataname"] == name:
