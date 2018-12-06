@@ -267,7 +267,7 @@ def getGameInfo(game, modList):
 			return None
 	else:
 		for file in os.listdir(game):
-			if file.startsWith("HigurashiEp"):
+			if file.startswith("HigurashiEp"):
 				name = file
 
 	for game in modList:
@@ -309,6 +309,7 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWi
 		choiceList = ('"' + x.replace('"', '\\"') + '"' for x in withOther)
 		if choiceList:
 			choice = subprocess.check_output(["osascript", "-e", "choose from list {" + ",".join(choiceList) + "} with prompt \"" + guiPrompt + "\" default items \"Other\""]).strip().decode("utf-8")
+			if choice == u"false": exitWithError()
 		if choice == u"Other":
 			choice = subprocess.check_output(["osascript", "-e", "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"" + guiPrompt + "\")"]).strip().decode("utf-8")
 	else:
