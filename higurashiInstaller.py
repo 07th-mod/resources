@@ -1,10 +1,16 @@
-from __future__ import print_function, unicode_literals
+from __future__ import print_function, unicode_literals, with_statement
 import sys, os, os.path as path, platform, shutil, glob, subprocess, json
 try:
 	from urllib.request import urlopen, Request
 	from urllib.error import HTTPError
 except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
+
+try:
+	import winreg
+except ImportError:
+	import _winreg
+	winreg = _winreg
 
 # Python 2 Compatibility
 try: input = raw_input
@@ -233,6 +239,31 @@ def getModList():
 	file.close()
 	return info
 
+def findPossibleGamePathsWindows():
+	"""
+	Blindly retrieve all game folders in the `Steam\steamappps\common` folder (no filtering is performed)
+	TODO: scan other locations than just the steamapps folder
+	:return: a list of absolute paths, which are the folders in the `Steam\steamappps\common` folder
+	:rtype: list[str]
+	"""
+	registrySteamPath = None
+	try:
+		registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
+		registrySteamPath, _regType = winreg.QueryValueEx(registryKey, 'SteamPath')
+		winreg.CloseKey(registryKey)
+	except WindowsError:
+		print("findPossibleGamePaths: Couldn't read Steam registry key - Steam not installed?")
+		return []
+
+	# normpath added so returned paths have consistent slash directions (registry key has forward slashes on Win...)
+	try:
+		for root, dirs, _files in os.walk(os.path.join(registrySteamPath, r'steamapps\common')):
+			return [os.path.normpath(os.path.join(root, x)) for x in dirs]
+	except:
+		print("findPossibleGamePaths: Couldn't open registry key folder - Steam folder deleted?")
+		return []
+
+
 def findPossibleGamePaths():
 	"""
 	If supported, searches the computer for things that might be Higurashi games
@@ -242,10 +273,21 @@ def findPossibleGamePaths():
 	:return: A list of game paths that might be Higurashi games
 	:rtype: list[str]
 	"""
+	allPossibleGamePaths = []
+
+	if IS_WINDOWS:
+		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
+
 	if IS_MAC:
-		return sorted(x for x in subprocess.check_output(["mdfind", "kind:Application", "Higurashi"]).decode("utf-8").split("\n") if x)
-	else:
-		return []
+		allPossibleGamePaths.extend(
+			x for x in subprocess
+				.check_output(["mdfind", "kind:Application", "Higurashi"])
+				.decode("utf-8")
+				.split("\n") if x
+		)
+
+	#if all methods fail, return empty list
+	return sorted(allPossibleGamePaths)
 
 def getGameNameFromGamePath(gamePath, modList):
 	"""
