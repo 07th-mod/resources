@@ -19,23 +19,21 @@ except AttributeError:
 		return string
 
 # Define constants used throughout the script. Use function calls to enforce variables as const
-def IS_WINDOWS(): return platform.system() == "Windows"
-def IS_LINUX(): return platform.system() == "Linux"
-def IS_MAC(): return platform.system() == "Darwin"
+IS_WINDOWS = platform.system() == "Windows"
+IS_LINUX = platform.system() == "Linux"
+IS_MAC = platform.system() == "Darwin"
 
 #query available executables. If any installation of executables is done in the python script, it must be done
 #before this executes
+ARIA_EXECUTABLE = "aria2c"
 if path.exists("./aria2c"):
-	def ARIA_EXECUTABLE(): return "./aria2c"
-else:
-	def ARIA_EXECUTABLE(): return "aria2c"
+	ARIA_EXECUTABLE = "./aria2c"
 
+SEVEN_ZIP_EXECUTABLE = "7za"
 if path.exists("./7za"):
-	def SEVEN_ZIP_EXECUTABLE(): return "./7za"
+	SEVEN_ZIP_EXECUTABLE = "./7za"
 elif path.exists("./7z"):
-	def SEVEN_ZIP_EXECUTABLE(): return "./7z"
-else:
-	def SEVEN_ZIP_EXECUTABLE(): return "7za"
+	SEVEN_ZIP_EXECUTABLE = "./7z"
 
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None):
@@ -47,7 +45,7 @@ def aria(downloadDir=None, inputFile=None):
 	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
 	"""
 	arguments = [
-		ARIA_EXECUTABLE(),
+		ARIA_EXECUTABLE,
 		"--file-allocation=none",
 		'--continue=true',
 		'--retry-wait=5',
@@ -67,11 +65,11 @@ def aria(downloadDir=None, inputFile=None):
 	subprocess.call(arguments)
 
 def sevenZipExtract(archive_path):
-	subprocess.call([SEVEN_ZIP_EXECUTABLE(), "x", archive_path, "-aoa"])
+	subprocess.call([SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"])
 
 def exitWithError():
 	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
-	if IS_WINDOWS():
+	if IS_WINDOWS:
 		input()
 	sys.exit(1)
 
@@ -86,7 +84,7 @@ class Installer:
 		self.directory = directory
 		self.info = info
 
-		if IS_MAC():
+		if IS_MAC:
 			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
 		else:
 			self.dataDirectory = path.join(self.directory, info["dataname"])
@@ -135,7 +133,7 @@ class Installer:
 		- Then, the URLs listed in the JSON file are written out to a file called 'downloadList.txt'
 		- Finally, aria2c is called to download the files listed in 'downloadList.txt'
 		"""
-		if IS_WINDOWS():
+		if IS_WINDOWS:
 			try:
 				files = self.info["files"]["win"]
 			except KeyError:
@@ -206,7 +204,7 @@ class Installer:
 		except OSError:
 			pass
 
-		if IS_MAC():
+		if IS_MAC:
 			# Allows fixing up application Info.plist file so that the titlebar doesn't show `Higurashi01` as the name of the application
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")
@@ -244,7 +242,7 @@ def findPossibleGames():
 	:return: A list of things that might be Higurashi games
 	:rtype: list[str]
 	"""
-	if IS_MAC():
+	if IS_MAC:
 		return sorted(x for x in subprocess.check_output(["mdfind", "kind:Application", "Higurashi"]).decode("utf-8").split("\n") if x)
 	else:
 		return []
@@ -258,7 +256,7 @@ def getGameInfo(game, modList):
 	:return: The name of the game, or None if no game was matched
 	:rtype: str or None
 	"""
-	if IS_MAC():
+	if IS_MAC:
 		try:
 			info = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", path.join(game, "Contents/Info.plist")])
 			parsed = json.loads(info)
@@ -304,7 +302,7 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWi
 	:rtype: str
 	"""
 	choice = "Other"
-	if IS_MAC():
+	if IS_MAC:
 		withOther = choiceList + ["Other"] if canOther else choiceList
 		choiceList = ('"' + x.replace('"', '\\"') + '"' for x in withOther)
 		if choiceList:
