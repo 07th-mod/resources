@@ -38,7 +38,6 @@ def aria(downloadDir=None, inputFile=None):
 
 	:param downloadDir: The directory to store the downloaded file(s)
 	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
-	:return:
 	"""
 	arguments = [
 		ARIA_EXECUTABLE(),
@@ -61,8 +60,7 @@ def aria(downloadDir=None, inputFile=None):
 	subprocess.call(arguments)
 
 def exitWithError():
-	# I think the windows command prompt immediately exits if you launched the program from a GUI
-	# So make sure they can read any error messages by waiting for input
+	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
 	if IS_WINDOWS():
 		input()
 	sys.exit(1)
@@ -130,7 +128,11 @@ class Installer:
 
 	def download(self):
 		"""
-		Downloads the required files for the mod
+		Downloads the required files for the mod.
+		- The JSON file contains the list of files for each platform to download (see the constructor of this class).
+		- This function first selects the appropriate section of the JSON file, depending on the current platform
+		- Then, the URLs listed in the JSON file are written out to a file called 'downloadList.txt'
+		- Finally, aria2c is called to download the files listed in 'downloadList.txt'
 		"""
 		if IS_WINDOWS():
 			try:
@@ -163,7 +165,7 @@ class Installer:
 
 	def extractFiles(self):
 		"""
-		Extracts downloaded files using 7zip
+		Extracts downloaded files using 7zip: "Overwrite All existing files without prompt."
 		"""
 		for file in sorted(os.listdir(self.downloadDir)):
 			subprocess.call([self.unzip, "x", path.join(self.downloadDir, file), "-aoa"])
