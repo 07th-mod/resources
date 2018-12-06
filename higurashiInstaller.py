@@ -30,6 +30,13 @@ if path.exists("./aria2c"):
 else:
 	def ARIA_EXECUTABLE(): return "aria2c"
 
+if path.exists("./7za"):
+	def SEVEN_ZIP_EXECUTABLE(): return "./7za"
+elif path.exists("./7z"):
+	def SEVEN_ZIP_EXECUTABLE(): return "./7z"
+else:
+	def SEVEN_ZIP_EXECUTABLE(): return "7za"
+
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None):
 	"""
@@ -58,6 +65,9 @@ def aria(downloadDir=None, inputFile=None):
 		arguments.append('--input-file=' + inputFile)
 
 	subprocess.call(arguments)
+
+def sevenZipExtract(archive_path):
+	subprocess.call([SEVEN_ZIP_EXECUTABLE(), "x", archive_path, "-aoa"])
 
 def exitWithError():
 	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
@@ -89,15 +99,6 @@ class Installer:
 			self.isSteam = False
 
 		self.downloadDir = info["name"] + "Download"
-
-		if path.exists("./7za"):
-			self.unzip = "./7za"
-		elif path.exists("./7z"):
-			self.unzip = "./7z"
-		else:
-			self.unzip = "7za"
-
-
 
 	def backupUI(self):
 		"""
@@ -168,7 +169,7 @@ class Installer:
 		Extracts downloaded files using 7zip: "Overwrite All existing files without prompt."
 		"""
 		for file in sorted(os.listdir(self.downloadDir)):
-			subprocess.call([self.unzip, "x", path.join(self.downloadDir, file), "-aoa"])
+			sevenZipExtract(path.join(self.downloadDir, file))
 
 	def moveFilesIntoPlace(self, fromDir=None, toDir=None):
 		"""
