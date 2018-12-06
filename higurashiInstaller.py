@@ -18,10 +18,16 @@ except AttributeError:
 	def decodeStr(string):
 		return string
 
+# Define constants used throughout the script. Use function calls to enforce variables as const
+def IS_WINDOWS(): return platform.system() == "Windows"
+def IS_LINUX(): return platform.system() == "Linux"
+def IS_MAC(): return platform.system() == "Darwin"
+
+
 def exitWithError():
 	# I think the windows command prompt immediately exits if you launched the program from a GUI
 	# So make sure they can read any error messages by waiting for input
-	if platform.system() == "Windows":
+	if IS_WINDOWS():
 		input()
 	sys.exit(1)
 
@@ -36,7 +42,7 @@ class Installer:
 		self.directory = directory
 		self.info = info
 
-		if platform.system() == "Darwin":
+		if IS_MAC():
 			self.dataDirectory = path.join(self.directory, "Contents/Resources/Data")
 		else:
 			self.dataDirectory = path.join(self.directory, info["dataname"])
@@ -93,7 +99,7 @@ class Installer:
 		"""
 		Downloads the required files for the mod
 		"""
-		if platform.system() == "Windows":
+		if IS_WINDOWS():
 			try:
 				files = self.info["files"]["win"]
 			except KeyError:
@@ -176,7 +182,7 @@ class Installer:
 		except OSError:
 			pass
 
-		if platform.system() == "Darwin":
+		if IS_MAC():
 			# Allows fixing up application Info.plist file so that the titlebar doesn't show `Higurashi01` as the name of the application
 			# Can also add a custom CFBundleIdentifier to change the save directory (e.g. for Console Arcs)
 			infoPlist = path.join(self.directory, "Contents/Info.plist")
@@ -214,7 +220,7 @@ def findPossibleGames():
 	:return: A list of things that might be Higurashi games
 	:rtype: list[str]
 	"""
-	if platform.system() == "Darwin":
+	if IS_MAC():
 		return sorted(x for x in subprocess.check_output(["mdfind", "kind:Application", "Higurashi"]).decode("utf-8").split("\n") if x)
 	else:
 		return []
@@ -228,7 +234,7 @@ def getGameInfo(game, modList):
 	:return: The name of the game, or None if no game was matched
 	:rtype: str or None
 	"""
-	if platform.system() == "Darwin":
+	if IS_MAC():
 		try:
 			info = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", path.join(game, "Contents/Info.plist")])
 			parsed = json.loads(info)
@@ -273,7 +279,7 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=True):
 	:rtype: str
 	"""
 	choice = "Other"
-	if platform.system() == "Darwin":
+	if IS_MAC():
 		withOther = choiceList + ["Other"] if canOther else choiceList
 		choiceList = ('"' + x.replace('"', '\\"') + '"' for x in withOther)
 		if choiceList:
