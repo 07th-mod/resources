@@ -23,6 +23,42 @@ def IS_WINDOWS(): return platform.system() == "Windows"
 def IS_LINUX(): return platform.system() == "Linux"
 def IS_MAC(): return platform.system() == "Darwin"
 
+#query available executables. If any installation of executables is done in the python script, it must be done
+#before this executes
+if path.exists("./aria2c"):
+	def ARIA_EXECUTABLE(): return "./aria2c"
+else:
+	def ARIA_EXECUTABLE(): return "aria2c"
+
+#when calling this function, use named arguments to avoid confusion!
+def aria(downloadDir=None, inputFile=None):
+	"""
+	Calls aria2c with some default arguments:
+	TODO: list what each default argument does as comments next to arguments array?
+
+	:param downloadDir: The directory to store the downloaded file(s)
+	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
+	:return:
+	"""
+	arguments = [
+		ARIA_EXECUTABLE(),
+		"--file-allocation=none",
+		'--continue=true',
+		'--retry-wait=5',
+		'-m 0',
+		'-x 8',
+		'-s 8',
+		'-j 1',
+	]
+
+	#Add an extra command line argument if the function argument has been provided
+	if downloadDir:
+		arguments.append('-d ' + downloadDir)
+
+	if inputFile:
+		arguments.append('--input-file=' + inputFile)
+
+	subprocess.call(arguments)
 
 def exitWithError():
 	# I think the windows command prompt immediately exits if you launched the program from a GUI
@@ -63,10 +99,7 @@ class Installer:
 		else:
 			self.unzip = "7za"
 
-		if path.exists("./aria2c"):
-			self.aria = "./aria2c"
-		else:
-			self.aria = "aria2c"
+
 
 	def backupUI(self):
 		"""
@@ -123,20 +156,8 @@ class Installer:
 		for file in files:
 			fileList.write(file + "\n")
 		fileList.close()
-		arguments = [
-			self.aria,
-			"--file-allocation=none",
-			'--file-allocation=none',
-			'--continue=true',
-			'--retry-wait=5',
-			'-m 0',
-			'-x 8',
-			'-s 8',
-			'-j 1',
-			'-d ' + self.downloadDir,
-			'--input-file=downloadList.txt'
-		]
-		subprocess.call(arguments)
+
+		aria(downloadDir=self.downloadDir, inputFile='downloadList.txt')
 
 		os.remove("downloadList.txt")
 
