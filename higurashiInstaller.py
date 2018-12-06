@@ -265,9 +265,13 @@ def getGameNameFromGamePath(gamePath, modList):
 		except (OSError, KeyError):
 			return None
 	else:
-		for file in os.listdir(gamePath):
-			if file.startswith("HigurashiEp"):
-				name = file
+		try:
+			for file in os.listdir(gamePath):
+				if file.startswith("HigurashiEp"):
+					name = file
+		except:
+			print("getGameNameFromGamePath failed on path [{}]".format(gamePath))
+			return None
 
 	for mod in modList:
 		if mod["dataname"] == name:
