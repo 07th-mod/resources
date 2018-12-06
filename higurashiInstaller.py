@@ -309,9 +309,11 @@ def getGameNameFromGamePath(gamePath, modList):
 		except (OSError, KeyError):
 			return None
 	else:
+		#create a set data structure, containing all the mod data folder names
+		allModDataFolders = set([mod["dataname"] for mod in modList])
 		try:
 			for file in os.listdir(gamePath):
-				if file.startswith("HigurashiEp") and "Data" in file:
+				if file in allModDataFolders:
 					name = file
 					break
 		except:
