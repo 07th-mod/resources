@@ -250,10 +250,11 @@ def findPossibleGamePaths():
 def getGameNameFromGamePath(gamePath, modList):
 	"""
 	Given the path to a game folder, gets the name of the game in the folder, ONLY if a mod exists for that game
+	The returned name will match the 'dataname' field in the JSON file, or be None type if no name could be determined.
 
 	:param str gamePath: The path to the game folder
 	:param list[dict] modList: The list of available mods (used for finding game names)
-	:return: The name of the game, or None if no game was matched
+	:return: The name of the game , or None if no game was matched
 	:rtype: str or None
 	"""
 	if IS_MAC:
@@ -277,16 +278,12 @@ def findInstalledGames(modList):
 	"""
 	Find moddable games
 	Uses findPossibleGames and therefore will support finding games on the same platforms it does
+	TODO: consider removal of this function, since it's only called in one place.
 	:param list[dict] modList: The list of available mods
 	:return: A list of games that were found and moddable
 	:rtype: list[str]
 	"""
-	possibleGamePaths = findPossibleGamePaths()
-	validatedGamePaths = []
-	for gamePath in possibleGamePaths:
-		if getGameNameFromGamePath(gamePath, modList) is not None:
-			validatedGamePaths.append(gamePath)
-	return validatedGamePaths
+	return [path for path in findPossibleGamePaths() if getGameNameFromGamePath(path, modList) is not None]
 
 def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
 	"""
