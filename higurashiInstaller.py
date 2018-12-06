@@ -151,7 +151,7 @@ class Installer:
 					files = self.info["files"]["unix-mg"]
 		try:
 			os.mkdir(self.downloadDir)
-		except:
+		except OSError:
 			pass
 		fileList = open("downloadList.txt", "w")
 		for file in files:
@@ -268,9 +268,9 @@ def getGameInfo(game, modList):
 			if file.startswith("HigurashiEp"):
 				name = file
 
-	for game in modList:
-		if game["dataname"] == name:
-			return game["target"]
+	for mod in modList:
+		if mod["dataname"] == name:
+			return mod["target"]
 	return None
 
 def findGames(modList):
@@ -320,7 +320,7 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWi
 		inputted = input()
 		try:
 			choice = choiceList[int(inputted.strip())]
-		except:
+		except (ValueError, IndexError):
 			if not canOther:
 				print("You must choose one of the available items")
 				exitWithError()
@@ -338,36 +338,39 @@ def printSupportedGames(modList):
 	for game in set(x["target"] for x in modList):
 		print("  " + game)
 
-print("Getting latest mod info...")
-modList = getModList()
-foundGames = findGames(modList)
-gameToUse = promptChoice(
-	choiceList=foundGames,
-	guiPrompt="Please choose a game to mod",
-	textPrompt="Please input the path of the game you would like to mod.",
-	textPromptWithOther="Please type the number of a game you would like to mod.  Alternatively, you can input the path to it manually.",
-	canOther=True
-)
-targetName = getGameInfo(gameToUse, modList)
-if not targetName:
-	print(gameToUse + " does not appear to be a supported higurashi game.")
-	printSupportedGames(modList)
-	exitWithError()
-possibleMods = [x for x in modList if x["target"] == targetName]
-if len(possibleMods) > 1:
-	modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install")
-	mod = [x for x in possibleMods if x["name"] == modName][0]
-else:
-	mod = possibleMods[0]
+def main():
+	print("Getting latest mod info...")
+	modList = getModList()
+	foundGames = findGames(modList)
+	gameToUse = promptChoice(
+		choiceList=foundGames,
+		guiPrompt="Please choose a game to mod",
+		textPrompt="Please input the path of the game you would like to mod.",
+		textPromptWithOther="Please type the number of a game you would like to mod.  Alternatively, you can input the path to it manually.",
+		canOther=True
+	)
+	targetName = getGameInfo(gameToUse, modList)
+	if not targetName:
+		print(gameToUse + " does not appear to be a supported higurashi game.")
+		printSupportedGames(modList)
+		exitWithError()
+	possibleMods = [x for x in modList if x["target"] == targetName]
+	if len(possibleMods) > 1:
+		modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install")
+		mod = [x for x in possibleMods if x["name"] == modName][0]
+	else:
+		mod = possibleMods[0]
 
-installer = Installer(gameToUse, mod)
-print("Downloading...")
-installer.download()
-print("Extracting...")
-installer.backupUI()
-installer.cleanOld()
-installer.extractFiles()
-print("Moving files into place...")
-installer.moveFilesIntoPlace()
-print("Done!")
-installer.cleanup()
+	installer = Installer(gameToUse, mod)
+	print("Downloading...")
+	installer.download()
+	print("Extracting...")
+	installer.backupUI()
+	installer.cleanOld()
+	installer.extractFiles()
+	print("Moving files into place...")
+	installer.moveFilesIntoPlace()
+	print("Done!")
+	installer.cleanup()
+
+main()
