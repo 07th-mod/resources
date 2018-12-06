@@ -233,13 +233,13 @@ def getModList():
 	file.close()
 	return info
 
-def findPossibleGames():
+def findPossibleGamePaths():
 	"""
 	If supported, searches the computer for things that might be Higurashi games
 	Currently only does things on Mac OS
 	TODO: Find ways to search for games on other platforms
 
-	:return: A list of things that might be Higurashi games
+	:return: A list of game paths that might be Higurashi games
 	:rtype: list[str]
 	"""
 	if IS_MAC:
@@ -247,24 +247,24 @@ def findPossibleGames():
 	else:
 		return []
 
-def getGameInfo(game, modList):
+def getGameNameFromGamePath(gamePath, modList):
 	"""
-	Gets the name of the given game, if there's a mod for it
+	Given the path to a game folder, gets the name of the game in the folder, ONLY if a mod exists for that game
 
-	:param str game: The path to the game
+	:param str gamePath: The path to the game folder
 	:param list[dict] modList: The list of available mods (used for finding game names)
 	:return: The name of the game, or None if no game was matched
 	:rtype: str or None
 	"""
 	if IS_MAC:
 		try:
-			info = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", path.join(game, "Contents/Info.plist")])
+			info = subprocess.check_output(["plutil", "-convert", "json", "-o", "-", path.join(gamePath, "Contents/Info.plist")])
 			parsed = json.loads(info)
 			name = parsed["CFBundleExecutable"] + "_Data"
 		except (OSError, KeyError):
 			return None
 	else:
-		for file in os.listdir(game):
+		for file in os.listdir(gamePath):
 			if file.startswith("HigurashiEp"):
 				name = file
 
@@ -273,7 +273,7 @@ def getGameInfo(game, modList):
 			return mod["target"]
 	return None
 
-def findGames(modList):
+def findInstalledGames(modList):
 	"""
 	Find moddable games
 	Uses findPossibleGames and therefore will support finding games on the same platforms it does
@@ -281,12 +281,12 @@ def findGames(modList):
 	:return: A list of games that were found and moddable
 	:rtype: list[str]
 	"""
-	possibleGames = findPossibleGames()
-	games = []
-	for game in possibleGames:
-		if getGameInfo(game, modList) is not None:
-			games.append(game)
-	return games
+	possibleGamePaths = findPossibleGamePaths()
+	validatedGamePaths = []
+	for gamePath in possibleGamePaths:
+		if getGameNameFromGamePath(gamePath, modList) is not None:
+			validatedGamePaths.append(gamePath)
+	return validatedGamePaths
 
 def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
 	"""
@@ -341,7 +341,9 @@ def printSupportedGames(modList):
 def main():
 	print("Getting latest mod info...")
 	modList = getModList()
-	foundGames = findGames(modList)
+	foundGames = findInstalledGames(modList)
+
+	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
 	gameToUse = promptChoice(
 		choiceList=foundGames,
 		guiPrompt="Please choose a game to mod",
@@ -349,14 +351,21 @@ def main():
 		textPromptWithOther="Please type the number of a game you would like to mod.  Alternatively, you can input the path to it manually.",
 		canOther=True
 	)
-	targetName = getGameInfo(gameToUse, modList)
+
+	#target name, for example 'Watanagashi', that the user has selected
+	targetName = getGameNameFromGamePath(gameToUse, modList)
 	if not targetName:
 		print(gameToUse + " does not appear to be a supported higurashi game.")
 		printSupportedGames(modList)
 		exitWithError()
+
+	# Using the targetName (eg. 'Watanagashi'), check which mods have a matching name
+	# Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
 	possibleMods = [x for x in modList if x["target"] == targetName]
 	if len(possibleMods) > 1:
-		modName = promptChoice([x["name"] for x in possibleMods], "Please choose a mod to install", "Please type the number of the mod to install")
+		modName = promptChoice(choiceList=[x["name"] for x in possibleMods],
+							   guiPrompt="Please choose a mod to install",
+							   textPrompt="Please type the number of the mod to install")
 		mod = [x for x in possibleMods if x["name"] == modName][0]
 	else:
 		mod = possibleMods[0]
