@@ -12,8 +12,8 @@ try:
 	from tkinter import Listbox
 except ImportError:
 	import Tkinter as tkinter
-	from tkinter import tkFileDialog as filedialog
-	from tkinter import Listbox
+	from Tkinter import tkFileDialog as filedialog
+	from Tkinter import Listbox
 
 # Python 2 Compatibility
 try: input = raw_input
@@ -348,8 +348,7 @@ def findPossibleGamePathsWindows():
 	try:
 		import winreg
 	except ImportError:
-		import _winreg
-		winreg = _winreg
+		import _winreg as winreg
 
 	registrySteamPath = None
 	try:
