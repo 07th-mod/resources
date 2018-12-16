@@ -445,8 +445,6 @@ def findInstalledGames(modList):
 def promptChoice(rootGUIWindow, choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
 	"""
 	Prompts the user to choose from a list
-	Currently supports using a choose GUI on mac OS and falls back to a CLI chooser on other OSes
-	TODO: Find ways to display choose GUIs on other OSes
 	:param list[str] choiceList: The list of choices
 	:param str guiPrompt: The prompt to use in GUI mode
 	:param str textPrompt: The prompt to use in CLI mode.  Note that the user will be directed to select from a list of integers representing options so please mention that.
@@ -456,10 +454,10 @@ def promptChoice(rootGUIWindow, choiceList, guiPrompt, textPrompt, canOther=Fals
 	:rtype: str
 	"""
 	result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther)
-	if result is not None:
-		choice = result
+	if not result:
+		exitWithError()
 
-	return decodeStr(choice)
+	return decodeStr(result)
 
 def printSupportedGames(modList):
 	"""
