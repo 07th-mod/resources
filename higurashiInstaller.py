@@ -15,6 +15,7 @@ except ImportError:
 try:
 	import tkinter
 	from tkinter import filedialog
+	from tkinter import Listbox
 except ImportError:
 	import Tkinter
 	from tkinter import tkFileDialog
@@ -58,6 +59,8 @@ def findWorkingExecutablePath(executable_paths, flags):
 				pass
 
 	return None
+
+###################################### Executable detection and Installation ###########################################
 
 # Define constants used throughout the script. Use function calls to enforce variables as const
 IS_WINDOWS = platform.system() == "Windows"
@@ -110,11 +113,79 @@ def aria(downloadDir=None, inputFile=None):
 def sevenZipExtract(archive_path):
 	subprocess.call([SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"])
 
+####################################### TKINTER Functions and Classes ##################################################
+# see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+class ListChooserDialog:
+
+	def __init__(self, parent, listEntries, guiPrompt, allowManualFolderSelection):
+		"""
+		NOTE: do not call this constructor directly. Use the ListChooserDialog.showDialog function instead.
+		"""
+		self.top = tkinter.Toplevel(parent)
+		defaultPadding = {"padx":20, "pady":10}
+
+		# Set a description for this dialog (eg "Please choose a game to mod"
+		tkinter.Label(self.top, text=guiPrompt).pack()
+
+		# Define the main listbox to hold the choices given by the 'listEntries' parameter
+		# Setting width to 0 forces auto-resize of listbox see: https://stackoverflow.com/a/26504193/848627
+		self.listbox = Listbox(self.top, selectmode=tkinter.BROWSE)
+		for item in listEntries:
+			self.listbox.insert(tkinter.END, item)
+		self.listbox.config(width=0)
+		self.listbox.pack(**defaultPadding)
+
+		# If the user is allowed to choose a directory manually, add directory chooser button
+		if allowManualFolderSelection:
+			b2 = tkinter.Button(self.top, text="Choose Folder Manually", command=self.showDirectoryChooser)
+			b2.pack(**defaultPadding)
+
+		# Add an 'OK' button. When pressed, the dialog is closed
+		b = tkinter.Button(self.top, text="OK", command=self.ok)
+		b.pack(**defaultPadding)
+
+		# This variable stores the returned value from the dialog
+		self.result = None
+
+	def showDirectoryChooser(self):
+		self.result = filedialog.askdirectory()
+		self.top.destroy()
+
+	def ok(self):
+		"""
+		This function is called when the 'OK' button is pressed. It retrieves the value of the currently selected item,
+		then closes the dialog
+		:return:
+		"""
+		selected_value = None
+
+		if len(self.listbox.curselection()) > 0:
+			selected_index = self.listbox.curselection()[0]
+			selected_value = self.listbox.get(selected_index)
+
+		self.result = selected_value
+
+		self.top.destroy()
+
+	def showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection):
+		"""
+		Static helper function to show dialog and get a return value. Arguments are the same as constructor
+		:param rootGUIWindow: the parent tkinter object of the dialog (can be root window)
+		:param choiceList: a list of strings that the user is to choose from
+		:param guiPrompt: the description that will be shown on the dialog
+		:param allowManualFolderSelection: if true, user is allowed to select a folder manually.
+		:return: returns the value the user selected (string), or None if none available
+		"""
+		d = ListChooserDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection)
+		rootGUIWindow.wait_window(d.top)
+		return d.result
+
+########################################## Installer Functions  and Classes ############################################
 class Installer:
 	def __init__(self, directory, info):
 		"""
 		Installer Init
-		
+
 		:param str directory: The directory of the game
 		:param dict info: The info dictionary from server JSON file for the requested target
 		"""
@@ -369,7 +440,7 @@ def findInstalledGames(modList):
 	"""
 	return [path for path in findPossibleGamePaths() if getGameNameFromGamePath(path, modList) is not None]
 
-def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
+def promptChoice(rootGUIWindow, choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
 	"""
 	Prompts the user to choose from a list
 	Currently supports using a choose GUI on mac OS and falls back to a CLI chooser on other OSes
@@ -392,31 +463,10 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWi
 		if choice == u"Other":
 			choice = subprocess.check_output(["osascript", "-e", "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"" + guiPrompt + "\")"]).strip().decode("utf-8")
 	else:
-		if choiceList and canOther:
-			print(textPromptWithOther)
-		else:
-			print(textPrompt)
-		for index, game in enumerate(choiceList):
-			print(str(index) + ": " + game)
+		result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther)
+		if result is not None:
+			choice = result
 
-		if canOther:
-			print("Press Enter Key: Choose the folder manually")
-
-		inputted = input()
-
-		#Open a Folder Chooser prompt if user types 'm', and 'canOther' is enabled
-		if canOther and inputted.strip() == '':
-			return promptUserChooseFolder()
-
-		try:
-			choice = choiceList[int(inputted.strip())]
-		except (ValueError, IndexError):
-			if not canOther:
-				print("You must choose one of the available items")
-				exitWithError()
-			choice = inputted.strip()
-			if path.split(choice)[1].startswith("HigurashiEp"):
-				choice = path.split(choice)[0]
 	return decodeStr(choice)
 
 def printSupportedGames(modList):
@@ -428,19 +478,11 @@ def printSupportedGames(modList):
 	for game in set(x["target"] for x in modList):
 		print("  " + game)
 
-def promptUserChooseFolder():
-	"""
-	Operating System Suppoprt: Should work on all platforms
-	Opens a GUI which prompts the user to select a folder
-	:return: The full path to the user selected folder is returned
-	"""
-	return filedialog.askdirectory()  # show an "Open" dialog box and return the path to the selected file
-
 def main():
-	top = tkinter.Tk()
+	rootWindow = tkinter.Tk()
 
-	#IMPORTANT: remove this to show the main window
-	top.withdraw()
+	# NOTE: If you want to use the root window, you must remove this line. Otherwise it will be hidden.
+	rootWindow.withdraw()
 
 	print("Getting latest mod info...")
 	modList = getModList()
@@ -448,6 +490,7 @@ def main():
 
 	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
 	gameToUse = promptChoice(
+		rootGUIWindow = rootWindow,
 		choiceList=foundGames,
 		guiPrompt="Please choose a game to mod",
 		textPrompt="Please input the path of the game you would like to mod.",
@@ -466,9 +509,11 @@ def main():
 	# Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
 	possibleMods = [x for x in modList if x["target"] == targetName]
 	if len(possibleMods) > 1:
-		modName = promptChoice(choiceList=[x["name"] for x in possibleMods],
-							   guiPrompt="Please choose a mod to install",
-							   textPrompt="Please type the number of the mod to install")
+		modName = promptChoice(
+			rootGUIWindow = rootWindow,
+			choiceList=[x["name"] for x in possibleMods],
+			guiPrompt="Please choose a mod to install",
+			textPrompt="Please type the number of the mod to install")
 		mod = [x for x in possibleMods if x["name"] == modName][0]
 	else:
 		mod = possibleMods[0]
