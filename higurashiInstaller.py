@@ -149,7 +149,10 @@ class ListChooserDialog:
 		self.result = None
 
 	def showDirectoryChooser(self):
-		self.result = filedialog.askdirectory()
+		if IS_MAC:
+			self.result = filedialog.askopenfilename(filetypes=["macType com.apple.application"])
+		else:
+			self.result = filedialog.askdirectory()
 		self.top.destroy()
 
 	def ok(self):
@@ -168,6 +171,7 @@ class ListChooserDialog:
 
 		self.top.destroy()
 
+	@staticmethod
 	def showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection):
 		"""
 		Static helper function to show dialog and get a return value. Arguments are the same as constructor
@@ -454,19 +458,9 @@ def promptChoice(rootGUIWindow, choiceList, guiPrompt, textPrompt, canOther=Fals
 	:return: The string that the user selected, or if canOther is true, possibly a path that was not in the option list
 	:rtype: str
 	"""
-	choice = "Other"
-	if IS_MAC:
-		withOther = choiceList + ["Other"] if canOther else choiceList
-		choiceList = ('"' + x.replace('"', '\\"') + '"' for x in withOther)
-		if choiceList:
-			choice = subprocess.check_output(["osascript", "-e", "choose from list {" + ",".join(choiceList) + "} with prompt \"" + guiPrompt + "\" default items \"Other\""]).strip().decode("utf-8")
-			if choice == u"false": exitWithError()
-		if choice == u"Other":
-			choice = subprocess.check_output(["osascript", "-e", "POSIX path of (choose file of type {\"com.apple.application\"} with prompt \"" + guiPrompt + "\")"]).strip().decode("utf-8")
-	else:
-		result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther)
-		if result is not None:
-			choice = result
+	result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther)
+	if result is not None:
+		choice = result
 
 	return decodeStr(choice)
 
