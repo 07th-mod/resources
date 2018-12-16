@@ -11,10 +11,8 @@ try:
 	from tkinter import filedialog
 	from tkinter import Listbox
 except ImportError:
-	import Tkinter
-	tkinter = Tkinter
-	from tkinter import tkFileDialog
-	filedialog = tkFileDialog
+	import Tkinter as tkinter
+	from tkinter import tkFileDialog as filedialog
 	from tkinter import Listbox
 
 # Python 2 Compatibility
