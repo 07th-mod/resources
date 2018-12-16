@@ -33,6 +33,32 @@ except AttributeError:
 	def decodeStr(string):
 		return string
 
+def exitWithError():
+	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
+	print("ERROR: The installer cannot continue. Press any key to exit...")
+	if IS_WINDOWS:
+		input()
+	sys.exit(1)
+
+def findWorkingExecutablePath(executable_paths, flags):
+	"""
+	Try to execute each path in executable_paths to see which one can be called and returns exit code 0
+	The 'flags' argument is any extra flags required to make the executable return 0 exit code
+	:param executable_paths: a list [] of possible executable paths (eg. "./7za", "7z")
+	:param flags: any extra flags like "-h" required to make the executable have a 0 exit code
+	:return: the path of the valid executable, or None if no valid executables found
+	"""
+	with open(os.devnull, 'w') as os_devnull:
+		for path in executable_paths:
+			try:
+				if subprocess.call([path, flags], stdout=os_devnull) == 0:
+					print("Found valid executable:", path)
+					return path
+			except:
+				pass
+
+	return None
+
 # Define constants used throughout the script. Use function calls to enforce variables as const
 IS_WINDOWS = platform.system() == "Windows"
 IS_LINUX = platform.system() == "Linux"
@@ -40,15 +66,17 @@ IS_MAC = platform.system() == "Darwin"
 
 #query available executables. If any installation of executables is done in the python script, it must be done
 #before this executes
-ARIA_EXECUTABLE = "aria2c"
-if path.exists("./aria2c"):
-	ARIA_EXECUTABLE = "./aria2c"
+ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "aria2c"], '-h')
+if ARIA_EXECUTABLE is None:
+	# TODO: automatically download and install dependencies
+	print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
+	exitWithError()
 
-SEVEN_ZIP_EXECUTABLE = "7za"
-if path.exists("./7za"):
-	SEVEN_ZIP_EXECUTABLE = "./7za"
-elif path.exists("./7z"):
-	SEVEN_ZIP_EXECUTABLE = "./7z"
+SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7zaa", "7zaa", "./7az", "7az"], '-h')
+if SEVEN_ZIP_EXECUTABLE is None:
+	# TODO: automatically download and install dependencies
+	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
+	exitWithError()
 
 #when calling this function, use named arguments to avoid confusion!
 def aria(downloadDir=None, inputFile=None):
@@ -81,13 +109,6 @@ def aria(downloadDir=None, inputFile=None):
 
 def sevenZipExtract(archive_path):
 	subprocess.call([SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"])
-
-def exitWithError():
-	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
-	print("ERROR: The installer cannot continue. Press any key to exit...")
-	if IS_WINDOWS:
-		input()
-	sys.exit(1)
 
 class Installer:
 	def __init__(self, directory, info):
