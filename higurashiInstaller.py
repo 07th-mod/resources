@@ -142,7 +142,7 @@ class ListChooserDialog:
 
 	def showDirectoryChooser(self):
 		if IS_MAC:
-			self.result = filedialog.askopenfilename(filetypes=["macType com.apple.application"])
+			self.result = filedialog.askopenfilename(filetypes=[(None, "com.apple.application")])
 		else:
 			self.result = filedialog.askdirectory()
 		self.top.destroy()
