@@ -72,7 +72,7 @@ if ARIA_EXECUTABLE is None:
 	print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 	exitWithError()
 
-SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7zaa", "7zaa", "./7az", "7az"], '-h')
+SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "7za", "./7z", "7z"], '-h')
 if SEVEN_ZIP_EXECUTABLE is None:
 	# TODO: automatically download and install dependencies
 	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
