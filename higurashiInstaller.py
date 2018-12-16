@@ -7,12 +7,6 @@ except ImportError:
 	from urllib2 import urlopen, Request, HTTPError
 
 try:
-	import winreg
-except ImportError:
-	import _winreg
-	winreg = _winreg
-
-try:
 	import tkinter
 	from tkinter import filedialog
 	from tkinter import Listbox
@@ -353,6 +347,12 @@ def findPossibleGamePathsWindows():
 	:return: a list of absolute paths, which are the folders in the `Steam\steamappps\common` folder
 	:rtype: list[str]
 	"""
+	try:
+		import winreg
+	except ImportError:
+		import _winreg
+		winreg = _winreg
+
 	registrySteamPath = None
 	try:
 		registryKey = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Valve\Steam')
