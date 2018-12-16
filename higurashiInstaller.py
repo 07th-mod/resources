@@ -18,9 +18,10 @@ try:
 	from tkinter import Listbox
 except ImportError:
 	import Tkinter
-	from tkinter import tkFileDialog
 	tkinter = Tkinter
+	from tkinter import tkFileDialog
 	filedialog = tkFileDialog
+	from tkinter import Listbox
 
 # Python 2 Compatibility
 try: input = raw_input
