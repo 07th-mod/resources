@@ -121,12 +121,24 @@ class ListChooserDialog:
 		tkinter.Label(self.top, text=guiPrompt).pack()
 
 		# Define the main listbox to hold the choices given by the 'listEntries' parameter
+		listboxFrame = tkinter.Frame(self.top)
+
+		# Define a scrollbar and a listbox. The yscrollcommand is so that the listbox can control the scrollbar
+		scrollbar = tkinter.Scrollbar(listboxFrame, orient=tkinter.VERTICAL)
+		self.listbox = Listbox(listboxFrame, selectmode=tkinter.BROWSE, yscrollcommand=scrollbar.set)
+
+		# Also configure the scrollbar to control the listbox, and pack it
+		scrollbar.config(command=self.listbox.yview)
+		scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+
 		# Setting width to 0 forces auto-resize of listbox see: https://stackoverflow.com/a/26504193/848627
-		self.listbox = Listbox(self.top, selectmode=tkinter.BROWSE)
 		for item in listEntries:
 			self.listbox.insert(tkinter.END, item)
 		self.listbox.config(width=0)
-		self.listbox.pack(**defaultPadding)
+		self.listbox.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
+
+		# Finally, pack the Frame so its contents are displayed on the dialog
+		listboxFrame.pack(**defaultPadding)
 
 		# If the user is allowed to choose a directory manually, add directory chooser button
 		if allowManualFolderSelection:
