@@ -12,6 +12,15 @@ except ImportError:
 	import _winreg
 	winreg = _winreg
 
+try:
+	import tkinter
+	from tkinter import filedialog
+except ImportError:
+	import Tkinter
+	from tkinter import tkFileDialog
+	tkinter = Tkinter
+	filedialog = tkFileDialog
+
 # Python 2 Compatibility
 try: input = raw_input
 except NameError: pass
@@ -75,6 +84,7 @@ def sevenZipExtract(archive_path):
 
 def exitWithError():
 	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
+	print("ERROR: The installer cannot continue. Press any key to exit...")
 	if IS_WINDOWS:
 		input()
 	sys.exit(1)
@@ -367,7 +377,16 @@ def promptChoice(choiceList, guiPrompt, textPrompt, canOther=False, textPromptWi
 			print(textPrompt)
 		for index, game in enumerate(choiceList):
 			print(str(index) + ": " + game)
+
+		if canOther:
+			print("Press Enter Key: Choose the folder manually")
+
 		inputted = input()
+
+		#Open a Folder Chooser prompt if user types 'm', and 'canOther' is enabled
+		if canOther and inputted.strip() == '':
+			return promptUserChooseFolder()
+
 		try:
 			choice = choiceList[int(inputted.strip())]
 		except (ValueError, IndexError):
@@ -388,7 +407,20 @@ def printSupportedGames(modList):
 	for game in set(x["target"] for x in modList):
 		print("  " + game)
 
+def promptUserChooseFolder():
+	"""
+	Operating System Suppoprt: Should work on all platforms
+	Opens a GUI which prompts the user to select a folder
+	:return: The full path to the user selected folder is returned
+	"""
+	return filedialog.askdirectory()  # show an "Open" dialog box and return the path to the selected file
+
 def main():
+	top = tkinter.Tk()
+
+	#IMPORTANT: remove this to show the main window
+	top.withdraw()
+
 	print("Getting latest mod info...")
 	modList = getModList()
 	foundGames = findInstalledGames(modList)
