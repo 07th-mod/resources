@@ -54,6 +54,10 @@ def findWorkingExecutablePath(executable_paths, flags):
 
 	return None
 
+dirname = os.path.dirname(sys.argv[0])
+if dirname.strip():
+	os.chdir(dirname)
+
 ###################################### Executable detection and Installation ###########################################
 
 # Define constants used throughout the script. Use function calls to enforce variables as const
