@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 import sys, os, os.path as path, platform, shutil, glob, subprocess, json
 try:
