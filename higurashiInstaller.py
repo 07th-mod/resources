@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from __future__ import print_function, unicode_literals, with_statement
 import sys, os, os.path as path, platform, shutil, glob, subprocess, json
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 try:
 	from urllib.request import urlopen, Request
 	from urllib.error import HTTPError
@@ -82,7 +84,7 @@ if SEVEN_ZIP_EXECUTABLE is None:
 	exitWithError()
 
 #when calling this function, use named arguments to avoid confusion!
-def aria(downloadDir=None, inputFile=None):
+def aria(downloadDir=None, inputFile=None, url=None):
 	"""
 	Calls aria2c with some default arguments:
 	TODO: list what each default argument does as comments next to arguments array?
@@ -99,6 +101,8 @@ def aria(downloadDir=None, inputFile=None):
 		'-x 8',
 		'-s 8',
 		'-j 1',
+		'--follow-metalink=mem',  #always follow metalinks, for now
+		'--check-integrity=true', #check integrity when using metalink
 	]
 
 	#Add an extra command line argument if the function argument has been provided
@@ -108,10 +112,16 @@ def aria(downloadDir=None, inputFile=None):
 	if inputFile:
 		arguments.append('--input-file=' + inputFile)
 
+	if url:
+		arguments.append(url)
+
 	subprocess.call(arguments)
 
-def sevenZipExtract(archive_path):
-	subprocess.call([SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"])
+def sevenZipExtract(archive_path, outputDir=None):
+	arguments = [SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"]
+	if outputDir:
+		arguments.append('-o' + outputDir)
+	subprocess.call(arguments)
 
 ####################################### TKINTER Functions and Classes ##################################################
 # see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
@@ -339,7 +349,7 @@ class Installer:
 			if "CFBundleIdentifier" in self.info and parsed["CFBundleIdentifier"] != self.info["CFBundleIdentifier"]:
 				subprocess.call(["plutil", "-replace", "CFBundleIdentifier", "-string", self.info["CFBundleIdentifier"], infoPlist])
 
-def getModList():
+def getModList(jsonURL):
 	"""
 	Gets the list of available mods from the 07th Mod server
 
@@ -347,7 +357,7 @@ def getModList():
 	:rtype: list[dict]
 	"""
 	try:
-		file = urlopen(Request("http://07th-mod.com/installer/higurashi.json", headers={"User-Agent": ""}))
+		file = urlopen(Request(jsonURL, headers={"User-Agent": ""}))
 	except HTTPError as error:
 		print(error)
 		print("Couldn't reach 07th Mod Server to download patch info")
@@ -461,7 +471,7 @@ def findInstalledGames(modList):
 	"""
 	return [path for path in findPossibleGamePaths() if getGameNameFromGamePath(path, modList) is not None]
 
-def promptChoice(rootGUIWindow, choiceList, guiPrompt, textPrompt, canOther=False, textPromptWithOther=None):
+def promptChoice(rootGUIWindow, choiceList, guiPrompt, canOther=False):
 	"""
 	Prompts the user to choose from a list
 	:param list[str] choiceList: The list of choices
@@ -487,14 +497,10 @@ def printSupportedGames(modList):
 	for game in set(x["target"] for x in modList):
 		print("  " + game)
 
+
 def main():
-	rootWindow = tkinter.Tk()
-
-	# NOTE: If you want to use the root window, you must remove this line. Otherwise it will be hidden.
-	rootWindow.withdraw()
-
 	print("Getting latest mod info...")
-	modList = getModList()
+	modList = getModList("http://07th-mod.com/installer/higurashi.json")
 	foundGames = findInstalledGames(modList)
 
 	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
@@ -502,8 +508,6 @@ def main():
 		rootGUIWindow = rootWindow,
 		choiceList=foundGames,
 		guiPrompt="Please choose a game to mod",
-		textPrompt="Please input the path of the game you would like to mod.",
-		textPromptWithOther="Please type the number of a game you would like to mod.  Alternatively, you can input the path to it manually.",
 		canOther=True
 	)
 
@@ -514,6 +518,8 @@ def main():
 		printSupportedGames(modList)
 		exitWithError()
 
+	print("targetName", targetName)
+
 	# Using the targetName (eg. 'Watanagashi'), check which mods have a matching name
 	# Multiple mods may be returned (eg the 'full' patch and 'voice only' patch may have the same 'target' name
 	possibleMods = [x for x in modList if x["target"] == targetName]
@@ -521,8 +527,7 @@ def main():
 		modName = promptChoice(
 			rootGUIWindow = rootWindow,
 			choiceList=[x["name"] for x in possibleMods],
-			guiPrompt="Please choose a mod to install",
-			textPrompt="Please type the number of the mod to install")
+			guiPrompt="Please choose a mod to install")
 		mod = [x for x in possibleMods if x["name"] == modName][0]
 	else:
 		mod = possibleMods[0]
@@ -539,4 +544,288 @@ def main():
 	print("Done!")
 	installer.cleanup()
 
-main()
+UMINEKO_ANSWER_MODS = ["mod_voice_only", "mod_full_patch", "mod_adv_mode"]
+UMINEKO_QUESTION_MODS = ["mod_voice_only", "mod_full_patch", "mod_1080p_beta"]
+debug_mode = False
+
+# You can use the 'exist_ok' of python3 to do this already, but not in python 2
+def makeDirsExistOK(directoryToMake):
+	try:
+		os.makedirs(directoryToMake)
+	except OSError:
+		pass
+
+def uminekoDownload(downloadTempDir, url_list):
+	print("Downloading:{} to {}".format(url_list, downloadTempDir))
+	makeDirsExistOK(downloadTempDir)
+
+	for url in url_list:
+		print("will try to download {} into {} ".format(url, downloadTempDir))
+		if not debug_mode:
+			aria(downloadTempDir, url=url)
+
+#NOTE: this function makes some assumptions about the archive files:
+# - all archive files have either the extension .7z, .zip (or both)
+# - the archives are intended to be extracted in the order: 'graphics' 'voices' 'update', then any other type of archive
+def uminekoExtract(fromDir, toDir):
+	def sortingFunction(filenameAnyCase):
+		filename = filenameAnyCase.lower()
+		if 'graphics' in filename:
+			return 0
+		elif 'voices' in filename:
+			return 1
+		elif 'update' in filename:
+			return 2
+		else:
+			return 3
+
+	print("extracting from {} to {}".format(fromDir, toDir))
+
+	archives = []
+	otherFiles = []
+
+	for filename in os.listdir(fromDir):
+		if '.7z' in filename.lower() or '.zip' in filename.lower():
+			archives.append(filename)
+		else:
+			otherFiles.append(filename)
+
+	#sort the archive files so they are extracted in the correct order
+	archives.sort(key=sortingFunction)
+
+	for archive_name in archives:
+		archive_path = path.join(fromDir, archive_name)
+		print("Trying to extract file {} to {}".format(archive_path, toDir))
+		if not debug_mode:
+			sevenZipExtract(archive_path, outputDir=toDir)
+
+	#copy all non-archive files to the game folder. If a .utf file is found, rename it depending on the OS
+	for sourceFilename in otherFiles:
+		fileNameNoExt, extension = os.path.splitext(sourceFilename)
+
+		destFilename = sourceFilename
+
+		#on any OS besides MAC, rename 0.utf files to 0.u files. On mac, leave filenames unchanged.
+		if not IS_MAC and extension.lower() == '.utf':
+			destFilename = fileNameNoExt + '.u'
+
+		sourceFullPath = os.path.join(fromDir, sourceFilename)
+		destFullPath = os.path.join(toDir, destFilename)
+
+		print("Trying to copy", sourceFullPath, "to", destFullPath)
+		shutil.copy(sourceFullPath, destFullPath)
+
+def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
+	for path in paths:
+		if not os.path.isdir(path):
+			print("removeFilesWithExtensions: {} is not a dir or doesn't exist - skipping".format(path))
+			continue
+
+		for fileAnyCase in os.listdir(path):
+			filename, extension = os.path.splitext(fileAnyCase.lower())
+
+			hasCorrectExtension = extension in extensions
+
+			hasCorrectSearchString = False
+			for searchString in searchStrings:
+				if searchString in filename:
+					hasCorrectSearchString = True
+
+			fullDeletePath = os.path.join(path, fileAnyCase)
+
+			if hasCorrectExtension and hasCorrectSearchString:
+				print("Keeping file:", fullDeletePath)
+			else:
+				print("Deleting file:", fullDeletePath)
+				if not debug_mode:
+					os.remove(fullDeletePath)
+
+class RelativeDirectoryUtilityFunctions:
+	def __init__(self, rootPath):
+		self.rootPath = rootPath
+
+	def exists(self, relativePath):
+		if debug_mode:
+			return
+
+		return os.path.exists(os.path.join(self.rootPath, relativePath))
+
+	def move(self, relativePath, relativeDest):
+		if debug_mode:
+			return
+
+		shutil.move(os.path.join(self.rootPath, relativePath), os.path.join(self.rootPath, relativeDest))
+
+	def copy(self, relativePath, relativeDest):
+		if debug_mode:
+			return
+
+		shutil.copy(os.path.join(self.rootPath, relativePath), os.path.join(self.rootPath, relativeDest))
+
+	def writeLinesToFile(self, relativePath, lines):
+		if debug_mode:
+			return
+
+		with open(os.path.join(self.rootPath, relativePath), 'w') as f:
+			f.writelines(lines)
+
+#backs up files for both question and answer arcs
+#if a backup already exists, the file is instead removed
+def backupOrRemoveFiles(folderToBackup):
+	pathsToBackup = ['Umineko5to8.exe', 'Umineko5to8', 'Umineko5to8.app',
+					 'Umineko1to4.exe', 'Umineko1to4', 'Umineko1to4.app',
+					 '0.utf', '0.u']
+
+	for pathToBackup in pathsToBackup:
+		fullFilePath = os.path.join(folderToBackup, pathToBackup)
+		backupPath = fullFilePath + '.backup'
+
+		#only process the file if it exists on disk
+		if not os.path.isfile(fullFilePath) and not os.path.isdir(fullFilePath):
+			continue
+
+		# backup the file if no backup has been performed previously - otherwise delete the file
+		if os.path.isfile(backupPath) or os.path.isdir(backupPath):
+			print("backupOrRemoveFiles: removing", fullFilePath, "as backup already exists")
+			if os.path.isfile(backupPath):
+				os.remove(fullFilePath)
+			else:
+				shutil.rmtree(fullFilePath)
+		else:
+			print("backupOrRemoveFiles: backing up", fullFilePath)
+			shutil.move(fullFilePath, backupPath)
+
+def installUminekoAnswer(gameInfo, modToInstall, gamePath):
+	util = RelativeDirectoryUtilityFunctions(gamePath)
+
+	print("User wants to install", modToInstall)
+	print("game info:", gameInfo)
+	print("game path:", gamePath)
+
+	if modToInstall not in UMINEKO_ANSWER_MODS:
+		print("Unknown Umineko Mod [{}]".format(modToInstall))
+		exitWithError()
+
+	#do a quick verification that the directory is correct before starting installer
+	if not os.path.isfile(os.path.join(gamePath, "arc.nsa")):
+		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
+		print("ERROR - wrong game path. Installation Stopped.")
+		exitWithError()
+
+	#Create aliases for the temp directories, and ensure they exist beforehand
+	downloadTempDir = path.join(gamePath, "temp")
+	advDownloadTempDir = path.join(gamePath, "temp_adv")
+	makeDirsExistOK(downloadTempDir)
+	makeDirsExistOK(advDownloadTempDir)
+
+	############################# Wipe non-checksummed install files in the temp folder ################################
+	#deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir], ['.aria2', '.utf', '.u', '.exe'])
+	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
+								   extensions=['.7z', '.zip'],
+								   searchStrings=['graphic', 'voice'])
+
+	if os.listdir(downloadTempDir) or os.listdir(advDownloadTempDir):
+		print("Information: Temp directories are not empty - continued or overwritten install")
+
+	# Backup/clear the .exe and script files
+	backupOrRemoveFiles(gamePath)
+
+	if modToInstall == "mod_voice_only":
+		print("VOICE ONLY NOT IMPLEMENTED YET!!!!!!")
+	elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
+		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
+		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+
+		# write batch file to let users launch game in debug mode and enable steam sync
+		util.writeLinesToFile("Umineko5to8_DebugMode.bat", ["Umineko5to8.exe --debug", "pause"])
+		util.writeLinesToFile("EnableSteamSync.bat", ["mklink saves mysav /J", "pause"])
+
+		# Perform extra steps for adv mode
+		if modToInstall == "mod_adv_mode":
+			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
+			uminekoExtract(fromDir=advDownloadTempDir, toDir=gamePath)
+
+	# For now, don't copy save data
+
+	# consider deleting automatically?
+	#::open the temp folder so users can delete/backup any temp install files
+	# echo Opening temp folder for user to clean-up manually...
+	# explorer temp
+	if IS_WINDOWS:
+		subprocess.call(["explorer", os.path.join(gamePath, "temp")])
+		subprocess.call(["explorer", os.path.join(gamePath, "temp_adv")])
+
+def mainUmineko():
+
+	# Given a game path, returns the corresponding game install information for that path
+	# In the JSON, this is one of the elements of the top level array
+	# It will return 'None' if the game path is invalid (not an Umineko game). Use this feature to scan for valid game paths.
+	def getUminekoGameInformationFromGamePath(modList, gamePath):
+		for uminekoGameInfo in modList:
+			try:
+				for filename in os.listdir(gamePath):
+					if uminekoGameInfo['dataname'].lower() in filename.lower():
+						return uminekoGameInfo
+			except:
+				print("getGameNameFromGamePath failed on path [{}]".format(gamePath))
+
+		return None
+
+	print("Getting latest mod info (Umineko)...")
+	modList = getModListDUMMY()
+
+	gamePathList = [gamePath for gamePath in findPossibleGamePaths() if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
+	print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
+
+	userSelectedGamePath = promptChoice(
+		rootGUIWindow=rootWindow,
+		choiceList= gamePathList,
+		guiPrompt="Please choose a game to mod",
+		canOther=True
+	)
+
+	print("Selected game folder: [{}]".format(userSelectedGamePath))
+	gameInfo = getUminekoGameInformationFromGamePath(modList, userSelectedGamePath)
+	print("Selected Game Information:")
+	pp.pprint(gameInfo)
+
+	if gameInfo['name'] == 'UminekoAnswer':
+		userSelectedMod = promptChoice(
+			rootGUIWindow=rootWindow,
+			choiceList=UMINEKO_ANSWER_MODS,
+			guiPrompt="Please choose which Answer Arc mod to apply",
+			canOther=False
+		)
+		installUminekoAnswer(gameInfo, userSelectedMod, userSelectedGamePath)
+	elif gameInfo['name'] == 'UminekoQuestion':
+		userSelectedMod = promptChoice(
+			rootGUIWindow=rootWindow,
+			choiceList=UMINEKO_QUESTION_MODS,
+			guiPrompt="Please choose which Question Arc mod to apply",
+			canOther=False
+		)
+		installUminekoQuestion(gameInfo, userSelectedMod, userSelectedGamePath)
+	else:
+		print("Unknown Umineko game [{}]".format(gameInfo['name']))
+		exitWithError()
+
+rootWindow = tkinter.Tk()
+
+def closeAndStartHigurashi():
+	rootWindow.withdraw()
+	main()
+	rootWindow.destroy()
+
+def closeAndStartUmineko():
+	rootWindow.withdraw()
+	mainUmineko()
+	rootWindow.destroy()
+
+# Add an 'OK' button. When pressed, the dialog is closed
+defaultPadding = {"padx": 20, "pady": 10}
+b = tkinter.Button(rootWindow, text="Install Higurashi Mods", command=closeAndStartHigurashi)
+b.pack(**defaultPadding)
+b = tkinter.Button(rootWindow, text="Install Umineko Mods", command=closeAndStartUmineko)
+b.pack(**defaultPadding)
+
+rootWindow.mainloop()
