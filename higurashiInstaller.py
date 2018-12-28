@@ -670,55 +670,65 @@ def backupOrRemoveFiles(folderToBackup):
 			print("backupOrRemoveFiles: backing up", fullFilePath)
 			shutil.move(fullFilePath, backupPath)
 
-def installUminekoAnswer(gameInfo, modToInstall, gamePath):
+def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	print("User wants to install", modToInstall)
 	print("game info:", gameInfo)
 	print("game path:", gamePath)
 
-	if modToInstall not in UMINEKO_ANSWER_MODS:
-		print("Unknown Umineko Mod [{}]".format(modToInstall))
-		exitWithError()
-
-	#do a quick verification that the directory is correct before starting installer
+	# do a quick verification that the directory is correct before starting installer
 	if not os.path.isfile(os.path.join(gamePath, "arc.nsa")):
 		print("There is no 'arc.nsa' in the game folder. Are you sure the correct game folder was selected?")
 		print("ERROR - wrong game path. Installation Stopped.")
 		exitWithError()
 
-	#Create aliases for the temp directories, and ensure they exist beforehand
+	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = path.join(gamePath, "temp")
 	advDownloadTempDir = path.join(gamePath, "temp_adv")
 	makeDirsExistOK(downloadTempDir)
 	makeDirsExistOK(advDownloadTempDir)
 
-	############################# Wipe non-checksummed install files in the temp folder ################################
-	#deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir], ['.aria2', '.utf', '.u', '.exe'])
+	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
 								   extensions=['.7z', '.zip'],
 								   searchStrings=['graphic', 'voice'])
-
 	if os.listdir(downloadTempDir) or os.listdir(advDownloadTempDir):
 		print("Information: Temp directories are not empty - continued or overwritten install")
 
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(gamePath)
 
-	if modToInstall == "mod_voice_only":
-		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
-	elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
-		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+	# Download and extract files for Question/Answer Arcs
+	if isQuestionArcs:
+		if modToInstall == "mod_voice_only":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
+			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+		elif modToInstall == "mod_full_patch":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
+			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+		elif modToInstall == "mod_1080p":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p"])
+			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+	else:
+		if modToInstall == "mod_voice_only":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
+			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+		elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
+			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
 
-		# Perform extra steps for adv mode
-		if modToInstall == "mod_adv_mode":
-			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
-			uminekoExtract(fromDir=advDownloadTempDir, toDir=gamePath)
+			# Perform extra steps for adv mode
+			if modToInstall == "mod_adv_mode":
+				uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
+				uminekoExtract(fromDir=advDownloadTempDir, toDir=gamePath)
 
-	# write batch file to let users launch game in debug mode and enable steam sync
+	# write batch file to let users launch game in debug mode
+	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
+		f.writelines(["Umineko1to4.exe --debug", "pause"])
 	with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
 		f.writelines(["Umineko5to8.exe --debug", "pause"])
 
+	# Patched game uses mysav folder, which Steam can't see so can't get incompatible saves by accident.
+	# Add batch file which reverses this behaviour by making a linked folder from (saves->mysav)
 	with open(os.path.join(gamePath, "EnableSteamSync.bat"), 'w') as f:
 		f.writelines(["mklink saves mysav /J", "pause"])
 
@@ -763,25 +773,28 @@ def mainUmineko():
 	print("Selected Game Information:")
 	pp.pprint(gameInfo)
 
+	isQuestionArcs = None
+	modNames = None
 	if gameInfo['name'] == 'UminekoAnswer':
-		userSelectedMod = promptChoice(
-			rootGUIWindow=rootWindow,
-			choiceList=UMINEKO_ANSWER_MODS,
-			guiPrompt="Please choose which Answer Arc mod to apply",
-			canOther=False
-		)
-		installUminekoAnswer(gameInfo, userSelectedMod, userSelectedGamePath)
+		modNames = UMINEKO_ANSWER_MODS
+		isQuestionArcs = False
 	elif gameInfo['name'] == 'UminekoQuestion':
-		userSelectedMod = promptChoice(
-			rootGUIWindow=rootWindow,
-			choiceList=UMINEKO_QUESTION_MODS,
-			guiPrompt="Please choose which Question Arc mod to apply",
-			canOther=False
-		)
-		installUminekoQuestion(gameInfo, userSelectedMod, userSelectedGamePath)
+		modNames = UMINEKO_QUESTION_MODS
+		isQuestionArcs = True
 	else:
 		print("Unknown Umineko game [{}]".format(gameInfo['name']))
 		exitWithError()
+
+	# ask user which mod they want to apply to their game
+	userSelectedMod = promptChoice(
+		rootGUIWindow=rootWindow,
+		choiceList=modNames,
+		guiPrompt="Please choose which Answer Arc mod to apply",
+		canOther=False
+	)
+
+	installUmineko(gameInfo, userSelectedMod, userSelectedGamePath, isQuestionArcs)
+
 
 rootWindow = tkinter.Tk()
 
