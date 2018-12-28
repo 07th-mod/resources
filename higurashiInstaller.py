@@ -704,7 +704,8 @@ def installUminekoAnswer(gameInfo, modToInstall, gamePath):
 	backupOrRemoveFiles(gamePath)
 
 	if modToInstall == "mod_voice_only":
-		print("VOICE ONLY NOT IMPLEMENTED YET!!!!!!")
+		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
+		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
 	elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
 		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
 		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
