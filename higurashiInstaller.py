@@ -93,6 +93,7 @@ def aria(downloadDir=None, inputFile=None, url=None):
 
 	:param downloadDir: The directory to store the downloaded file(s)
 	:param inputFile: The path to a file containing multiple URLS to download (see aria2c documentation)
+	:return Returns the exit code of the aria2c call
 	"""
 	arguments = [
 		ARIA_EXECUTABLE,
@@ -117,13 +118,13 @@ def aria(downloadDir=None, inputFile=None, url=None):
 	if url:
 		arguments.append(url)
 
-	subprocess.call(arguments)
+	return subprocess.call(arguments)
 
 def sevenZipExtract(archive_path, outputDir=None):
 	arguments = [SEVEN_ZIP_EXECUTABLE, "x", archive_path, "-aoa"]
 	if outputDir:
 		arguments.append('-o' + outputDir)
-	subprocess.call(arguments)
+	return subprocess.call(arguments)
 
 ####################################### TKINTER Functions and Classes ##################################################
 # see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
@@ -566,7 +567,9 @@ def uminekoDownload(downloadTempDir, url_list):
 	for url in url_list:
 		print("will try to download {} into {} ".format(url, downloadTempDir))
 		if not umi_debug_mode:
-			aria(downloadTempDir, url=url)
+			if aria(downloadTempDir, url=url) != 0:
+				print("ERROR - could not download [{}]. Installation Stopped".format(url))
+				exitWithError()
 
 
 def uminekoExtractAndCopyFiles(fromDir, toDir):
@@ -612,7 +615,9 @@ def uminekoExtractAndCopyFiles(fromDir, toDir):
 		archive_path = path.join(fromDir, archive_name)
 		print("Trying to extract file {} to {}".format(archive_path, toDir))
 		if not umi_debug_mode:
-			sevenZipExtract(archive_path, outputDir=toDir)
+			if sevenZipExtract(archive_path, outputDir=toDir) != 0:
+				print("ERROR - could not extract [{}]. Installation Stopped".format(archive_path))
+				exitWithError()
 
 	#copy all non-archive files to the game folder. If a .utf file is found, rename it depending on the OS
 	for sourceFilename in otherFiles:
