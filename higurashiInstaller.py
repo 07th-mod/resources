@@ -13,9 +13,11 @@ try:
 	import tkinter
 	from tkinter import filedialog
 	from tkinter import Listbox
+	from tkinter import messagebox
 except ImportError:
 	import Tkinter as tkinter
 	from Tkinter import tkFileDialog as filedialog
+	from Tkinter import tkMessageBox as messagebox
 	from Tkinter import Listbox
 
 # Python 2 Compatibility
@@ -544,9 +546,11 @@ def main():
 	print("Done!")
 	installer.cleanup()
 
+################################################## UMINEKO INSTALL #####################################################
+
 UMINEKO_ANSWER_MODS = ["mod_voice_only", "mod_full_patch", "mod_adv_mode"]
 UMINEKO_QUESTION_MODS = ["mod_voice_only", "mod_full_patch", "mod_1080p_beta"]
-debug_mode = False
+umi_debug_mode = False
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
 def makeDirsExistOK(directoryToMake):
@@ -561,7 +565,7 @@ def uminekoDownload(downloadTempDir, url_list):
 
 	for url in url_list:
 		print("will try to download {} into {} ".format(url, downloadTempDir))
-		if not debug_mode:
+		if not umi_debug_mode:
 			aria(downloadTempDir, url=url)
 
 #NOTE: this function makes some assumptions about the archive files:
@@ -596,7 +600,7 @@ def uminekoExtract(fromDir, toDir):
 	for archive_name in archives:
 		archive_path = path.join(fromDir, archive_name)
 		print("Trying to extract file {} to {}".format(archive_path, toDir))
-		if not debug_mode:
+		if not umi_debug_mode:
 			sevenZipExtract(archive_path, outputDir=toDir)
 
 	#copy all non-archive files to the game folder. If a .utf file is found, rename it depending on the OS
@@ -637,37 +641,8 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 				print("Keeping file:", fullDeletePath)
 			else:
 				print("Deleting file:", fullDeletePath)
-				if not debug_mode:
+				if not umi_debug_mode:
 					os.remove(fullDeletePath)
-
-class RelativeDirectoryUtilityFunctions:
-	def __init__(self, rootPath):
-		self.rootPath = rootPath
-
-	def exists(self, relativePath):
-		if debug_mode:
-			return
-
-		return os.path.exists(os.path.join(self.rootPath, relativePath))
-
-	def move(self, relativePath, relativeDest):
-		if debug_mode:
-			return
-
-		shutil.move(os.path.join(self.rootPath, relativePath), os.path.join(self.rootPath, relativeDest))
-
-	def copy(self, relativePath, relativeDest):
-		if debug_mode:
-			return
-
-		shutil.copy(os.path.join(self.rootPath, relativePath), os.path.join(self.rootPath, relativeDest))
-
-	def writeLinesToFile(self, relativePath, lines):
-		if debug_mode:
-			return
-
-		with open(os.path.join(self.rootPath, relativePath), 'w') as f:
-			f.writelines(lines)
 
 #backs up files for both question and answer arcs
 #if a backup already exists, the file is instead removed
@@ -696,8 +671,6 @@ def backupOrRemoveFiles(folderToBackup):
 			shutil.move(fullFilePath, backupPath)
 
 def installUminekoAnswer(gameInfo, modToInstall, gamePath):
-	util = RelativeDirectoryUtilityFunctions(gamePath)
-
 	print("User wants to install", modToInstall)
 	print("game info:", gameInfo)
 	print("game path:", gamePath)
@@ -736,21 +709,21 @@ def installUminekoAnswer(gameInfo, modToInstall, gamePath):
 		uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
 		uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
 
-		# write batch file to let users launch game in debug mode and enable steam sync
-		util.writeLinesToFile("Umineko5to8_DebugMode.bat", ["Umineko5to8.exe --debug", "pause"])
-		util.writeLinesToFile("EnableSteamSync.bat", ["mklink saves mysav /J", "pause"])
-
 		# Perform extra steps for adv mode
 		if modToInstall == "mod_adv_mode":
 			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
 			uminekoExtract(fromDir=advDownloadTempDir, toDir=gamePath)
 
+	# write batch file to let users launch game in debug mode and enable steam sync
+	with open(os.path.join(gamePath, "Umineko5to8_DebugMode.bat"), 'w') as f:
+		f.writelines(["Umineko5to8.exe --debug", "pause"])
+
+	with open(os.path.join(gamePath, "EnableSteamSync.bat"), 'w') as f:
+		f.writelines(["mklink saves mysav /J", "pause"])
+
 	# For now, don't copy save data
 
-	# consider deleting automatically?
-	#::open the temp folder so users can delete/backup any temp install files
-	# echo Opening temp folder for user to clean-up manually...
-	# explorer temp
+	# Open the temp folder so users can delete/backup any temp install files
 	if IS_WINDOWS:
 		subprocess.call(["explorer", os.path.join(gamePath, "temp")])
 		subprocess.call(["explorer", os.path.join(gamePath, "temp_adv")])
@@ -819,6 +792,8 @@ def closeAndStartHigurashi():
 def closeAndStartUmineko():
 	rootWindow.withdraw()
 	mainUmineko()
+	messagebox.showinfo("Install Completed", "Install Finished. Temporary install files have been displayed - please "
+											 "delete the temporary files after checking the mod has installed correctly.")
 	rootWindow.destroy()
 
 # Add an 'OK' button. When pressed, the dialog is closed
