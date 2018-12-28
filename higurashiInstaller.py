@@ -568,10 +568,21 @@ def uminekoDownload(downloadTempDir, url_list):
 		if not umi_debug_mode:
 			aria(downloadTempDir, url=url)
 
-#NOTE: this function makes some assumptions about the archive files:
-# - all archive files have either the extension .7z, .zip (or both)
-# - the archives are intended to be extracted in the order: 'graphics' 'voices' 'update', then any other type of archive
-def uminekoExtract(fromDir, toDir):
+
+def uminekoExtractAndCopyFiles(fromDir, toDir):
+	"""
+	This function extracts all archives from the "fromDir" to the "toDir". It also will copy any files in the "fromDir"
+	to the "toDir". Finally, if there are any *.utf files in the fromDir, they will be renamed to 0.u in the "toDir"
+	depending on the operating system.
+
+	NOTE: this function makes some assumptions about the archive files:
+	- all archive files have either the extension .7z, .zip (or both)
+	- the archives are intended to be extracted in the order: 'graphics' 'voices' 'update', then any other type of archive
+
+	:param fromDir: source directory to copy/extract files from
+	:param toDir: destination directory to place copied/extracted files
+	:return: None
+	"""
 	def sortingFunction(filenameAnyCase):
 		filename = filenameAnyCase.lower()
 		if 'graphics' in filename:
@@ -620,6 +631,14 @@ def uminekoExtract(fromDir, toDir):
 		shutil.copy(sourceFullPath, destFullPath)
 
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
+	"""
+	Deletes all files in the specified paths, unless they have both a desired extension and a desired search string.
+
+	:param paths: A list[] of paths which will have its files deleted according to the below critera
+	:param extensions: files to keep must have one of the extensions in this list[] (including the '.', such as '.zip')
+	:param searchStrings: files to keep must contain these search strings.
+	:return:
+	"""
 	for path in paths:
 		if not os.path.isdir(path):
 			print("removeFilesWithExtensions: {} is not a dir or doesn't exist - skipping".format(path))
@@ -628,15 +647,19 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 		for fileAnyCase in os.listdir(path):
 			filename, extension = os.path.splitext(fileAnyCase.lower())
 
+			# Check if the file has the correct extension and if it contains the search string
 			hasCorrectExtension = extension in extensions
 
 			hasCorrectSearchString = False
-			for searchString in searchStrings:
-				if searchString in filename:
-					hasCorrectSearchString = True
+			if not searchStrings:
+				hasCorrectSearchString = True
+			else:
+				for searchString in searchStrings:
+					if searchString in filename:
+						hasCorrectSearchString = True
 
+			# Keep the file if it has both the correct extension and search string. Otherwise, delete it
 			fullDeletePath = os.path.join(path, fileAnyCase)
-
 			if hasCorrectExtension and hasCorrectSearchString:
 				print("Keeping file:", fullDeletePath)
 			else:
@@ -644,9 +667,14 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 				if not umi_debug_mode:
 					os.remove(fullDeletePath)
 
-#backs up files for both question and answer arcs
-#if a backup already exists, the file is instead removed
 def backupOrRemoveFiles(folderToBackup):
+	"""
+	Backs up files for both question and answer arcs
+	If a backup already exists, the file is instead removed
+
+	:param folderToBackup: Folder to scan for files. Backups will be placed in the same folder, with extension '.backup'
+	:return:
+	"""
 	pathsToBackup = ['Umineko5to8.exe', 'Umineko5to8', 'Umineko5to8.app',
 					 'Umineko1to4.exe', 'Umineko1to4', 'Umineko1to4.app',
 					 '0.utf', '0.u']
@@ -701,25 +729,25 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	if isQuestionArcs:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_full_patch":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_1080p":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p"])
-			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 	else:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-			uminekoExtract(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 
 			# Perform extra steps for adv mode
 			if modToInstall == "mod_adv_mode":
 				uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
-				uminekoExtract(fromDir=advDownloadTempDir, toDir=gamePath)
+				uminekoExtractAndCopyFiles(fromDir=advDownloadTempDir, toDir=gamePath)
 
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
