@@ -550,7 +550,7 @@ def main():
 ################################################## UMINEKO INSTALL #####################################################
 
 UMINEKO_ANSWER_MODS = ["mod_voice_only", "mod_full_patch", "mod_adv_mode"]
-UMINEKO_QUESTION_MODS = ["mod_voice_only", "mod_full_patch", "mod_1080p_beta"]
+UMINEKO_QUESTION_MODS = ["mod_voice_only", "mod_full_patch", "mod_1080p"]
 umi_debug_mode = False
 
 # You can use the 'exist_ok' of python3 to do this already, but not in python 2
@@ -758,6 +758,9 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_windows"])
 			else:
 				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_linux_mac"])
+		else:
+			print("ERROR - unknown mod")
+			exitWithError()
 
 		uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 	else:
@@ -772,6 +775,9 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
 			uminekoExtractAndCopyFiles(fromDir=advDownloadTempDir, toDir=gamePath)
+		else:
+			print("ERROR - unknown mod")
+			exitWithError()
 
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
@@ -808,7 +814,7 @@ def mainUmineko():
 		return None
 
 	print("Getting latest mod info (Umineko)...")
-	modList = getModListDUMMY()
+	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
 
 	gamePathList = [gamePath for gamePath in findPossibleGamePaths() if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
 	print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
@@ -841,7 +847,7 @@ def mainUmineko():
 	userSelectedMod = promptChoice(
 		rootGUIWindow=rootWindow,
 		choiceList=modNames,
-		guiPrompt="Please choose which Answer Arc mod to apply",
+		guiPrompt="Please choose which mod to install for " + gameInfo['displayName'],
 		canOther=False
 	)
 
@@ -858,8 +864,10 @@ def closeAndStartHigurashi():
 def closeAndStartUmineko():
 	rootWindow.withdraw()
 	mainUmineko()
-	messagebox.showinfo("Install Completed", "Install Finished. Temporary install files have been displayed - please "
-											 "delete the temporary files after checking the mod has installed correctly.")
+	installFinishedMessage = "Install Finished. Temporary install files have been displayed - please delete the " \
+							 "temporary files after checking the mod has installed correctly."
+	print(installFinishedMessage)
+	messagebox.showinfo("Install Completed", installFinishedMessage)
 	rootWindow.destroy()
 
 # Add an 'OK' button. When pressed, the dialog is closed
