@@ -638,9 +638,10 @@ def uminekoExtractAndCopyFiles(fromDir, toDir):
 def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 	"""
 	Deletes all files in the specified paths, unless they have both a desired extension and a desired search string.
+	NOTE: if file has multiple extensions, all will be matched. Eg. .zip.001 will match the extension 'zip' and '001'
 
 	:param paths: A list[] of paths which will have its files deleted according to the below critera
-	:param extensions: files to keep must have one of the extensions in this list[] (including the '.', such as '.zip')
+	:param extensions: files to keep must have one of the extensions in this list[] (without the '.', such as 'zip')
 	:param searchStrings: files to keep must contain these search strings.
 	:return:
 	"""
@@ -650,17 +651,19 @@ def deleteAllInPathExceptSpecified(paths, extensions, searchStrings):
 			continue
 
 		for fileAnyCase in os.listdir(path):
-			filename, extension = os.path.splitext(fileAnyCase.lower())
+			splitFileName = fileAnyCase.lower().split('.')
 
-			# Check if the file has the correct extension and if it contains the search string
-			hasCorrectExtension = extension in extensions
+			hasCorrectExtension = False
+			for extension in splitFileName[1:]:
+				if extension in extensions:
+					hasCorrectExtension = True
 
 			hasCorrectSearchString = False
 			if not searchStrings:
 				hasCorrectSearchString = True
 			else:
 				for searchString in searchStrings:
-					if searchString in filename:
+					if searchString in splitFileName[0]:
 						hasCorrectSearchString = True
 
 			# Keep the file if it has both the correct extension and search string. Otherwise, delete it
@@ -722,7 +725,7 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
-								   extensions=['.7z', '.zip'],
+								   extensions=['7z', 'zip'],
 								   searchStrings=['graphic', 'voice'])
 	if os.listdir(downloadTempDir) or os.listdir(advDownloadTempDir):
 		print("Information: Temp directories are not empty - continued or overwritten install")
