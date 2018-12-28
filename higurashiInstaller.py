@@ -560,6 +560,23 @@ def makeDirsExistOK(directoryToMake):
 	except OSError:
 		pass
 
+def tryShowFolder(path):
+	"""
+	Tries to show a given path in the system file browser
+	NOTE: this function call does not block! (uses subprocess.Popen)
+	:param path: the path to show
+	:return: true if successful, false otherwise
+	"""
+	try:
+		if IS_WINDOWS:
+			return subprocess.Popen(["explorer", path]) == 0
+		elif IS_MAC:
+			return subprocess.Popen(["open", path]) == 0
+		else:
+			return subprocess.Popen(["xdg-open", path]) == 0
+	except:
+		return False
+
 def uminekoDownload(downloadTempDir, url_list):
 	print("Downloading:{} to {}".format(url_list, downloadTempDir))
 	makeDirsExistOK(downloadTempDir)
@@ -794,8 +811,9 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 	# Open the temp folder so users can delete/backup any temp install files
 	if IS_WINDOWS:
-		subprocess.call(["explorer", os.path.join(gamePath, "temp")])
-		subprocess.call(["explorer", os.path.join(gamePath, "temp_adv")])
+		tryShowFolder(downloadTempDir)
+		if 'adv' in modToInstall:
+			tryShowFolder(advDownloadTempDir)
 
 def mainUmineko():
 
