@@ -687,7 +687,7 @@ def backupOrRemoveFiles(folderToBackup):
 		if not os.path.isfile(fullFilePath) and not os.path.isdir(fullFilePath):
 			continue
 
-		# backup the file if no backup has been performed previously - otherwise delete the file
+		# backup the file/folder if no backup has been performed previously - otherwise delete the file
 		if os.path.isfile(backupPath) or os.path.isdir(backupPath):
 			print("backupOrRemoveFiles: removing", fullFilePath, "as backup already exists")
 			if os.path.isfile(backupPath):
@@ -729,25 +729,27 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	if isQuestionArcs:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_full_patch":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 		elif modToInstall == "mod_1080p":
-			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p"])
-			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
+			if IS_WINDOWS:
+				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_windows"])
+			else:
+				uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["1080p_linux_mac"])
+
+		uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
 	else:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
 			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-		elif modToInstall == "mod_full_patch" or modToInstall == "mod_adv_mode":
+		elif modToInstall == "mod_full_patch":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
 			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
-
-			# Perform extra steps for adv mode
-			if modToInstall == "mod_adv_mode":
-				uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
-				uminekoExtractAndCopyFiles(fromDir=advDownloadTempDir, toDir=gamePath)
+		elif modToInstall == "mod_adv_mode":
+			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["full"])
+			uminekoExtractAndCopyFiles(fromDir=downloadTempDir, toDir=gamePath)
+			uminekoDownload(advDownloadTempDir, url_list=gameInfo["files"]["adv"])
+			uminekoExtractAndCopyFiles(fromDir=advDownloadTempDir, toDir=gamePath)
 
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
