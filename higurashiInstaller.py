@@ -720,6 +720,22 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	# Create aliases for the temp directories, and ensure they exist beforehand
 	downloadTempDir = path.join(gamePath, "temp")
 	advDownloadTempDir = path.join(gamePath, "temp_adv")
+
+	if path.isdir(downloadTempDir):
+		print("Information: Temp directories already exist - continued or overwritten install")
+
+		if "voice_only" in modToInstall:
+			continueInstallation = messagebox.askyesno("Voice Only Warning",
+								   "We have detected you have run the 'Voice Only' installer before.\n\n" +
+								   "If you switching from 'full patch' to 'voice only', please quit the " +
+								   "installer and completely delete the game directory, then re-install the game\n\n" +
+								   "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
+								   "Continue the installation?")
+
+			if not continueInstallation:
+				print("User cancelled install (Voice Only)")
+				exitWithError()
+
 	makeDirsExistOK(downloadTempDir)
 	makeDirsExistOK(advDownloadTempDir)
 
@@ -727,8 +743,6 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
 								   extensions=['7z', 'zip'],
 								   searchStrings=['graphic', 'voice'])
-	if os.listdir(downloadTempDir) or os.listdir(advDownloadTempDir):
-		print("Information: Temp directories are not empty - continued or overwritten install")
 
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(gamePath)
