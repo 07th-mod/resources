@@ -58,6 +58,10 @@ def findWorkingExecutablePath(executable_paths, flags):
 
 	return None
 
+# The installer info version this installer is compatibile with
+# Increment it when you make breaking changes to the json files
+JSON_VERSION = 1
+
 ###################################### Executable detection and Installation ###########################################
 
 # If you double-click on the file in Finder on macOS, it will not open with a path that is near the .py file
@@ -366,9 +370,20 @@ def getModList(jsonURL):
 		print("Couldn't reach 07th Mod Server to download patch info")
 		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
 		exitWithError()
+
 	info = json.load(file)
 	file.close()
-	return info
+	try:
+		version = info["version"]
+		if version > JSON_VERSION:
+			print("Your installer is out of date.")
+			print("Please download the latest version of the installer and try again.")
+			print("\nYour installer is compatible with mod listings up to version " + str(JSON_VERSION) + " but the latest listing is version " + version)
+			exitWithError()
+	except KeyError:
+		print("Warning: The mod info listing is missing a version number.  Things might not work.")
+		return info
+	return info["mods"]
 
 def findPossibleGamePathsWindows():
 	"""
@@ -503,7 +518,7 @@ def printSupportedGames(modList):
 
 def main():
 	print("Getting latest mod info...")
-	modList = getModList("http://07th-mod.com/installer/higurashi.json")
+	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstallData.json")
 	foundGames = findInstalledGames(modList)
 
 	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
@@ -879,6 +894,21 @@ def mainUmineko():
 
 	installUmineko(gameInfo, userSelectedMod, userSelectedGamePath, isQuestionArcs)
 
+def check07thModServerConnection():
+	"""
+	Makes sure that we can connect to the 07th-mod server
+	(Patches will fail to download if we can't)
+	"""
+	try:
+		testFile = urlopen(Request("http://07th-mod.com/", headers={"User-Agent": ""}))
+		testFile.close()
+	except HTTPError as error:
+		print(error)
+		print("Couldn't reach 07th Mod Server.  The installer will not be able to download patch files.")
+		print("Note that we have blocked Japan from downloading (VPNs are compatible with this installer, however)")
+		exitWithError()
+
+check07thModServerConnection()
 
 rootWindow = tkinter.Tk()
 
