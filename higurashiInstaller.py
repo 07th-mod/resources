@@ -32,6 +32,15 @@ except AttributeError:
 	def decodeStr(string):
 		return string
 
+def printErrorMessage(text):
+	"""
+	Prints message in red if stdout is a tty
+	"""
+	if sys.stdout.isatty:
+		print("\x1b[1m\x1b[31m" + text + "\x1b[0m")
+	else:
+		print(text)
+
 def exitWithError():
 	""" On Windows, prevent window closing immediately when exiting with error. Other plaforms just exit. """
 	print("ERROR: The installer cannot continue. Press any key to exit...")
@@ -376,8 +385,8 @@ def getModList(jsonURL):
 	try:
 		version = info["version"]
 		if version > JSON_VERSION:
-			print("Your installer is out of date.")
-			print("Please download the latest version of the installer and try again.")
+			printErrorMessage("Your installer is out of date.")
+			printErrorMessage("Please download the latest version of the installer and try again.")
 			print("\nYour installer is compatible with mod listings up to version " + str(JSON_VERSION) + " but the latest listing is version " + str(version))
 			exitWithError()
 	except KeyError:
