@@ -725,8 +725,8 @@ def backupOrRemoveFiles(folderToBackup):
 	:return:
 	"""
 	pathsToBackup = ['Umineko5to8.exe', 'Umineko5to8', 'Umineko5to8.app',
-					 'Umineko1to4.exe', 'Umineko1to4', 'Umineko1to4.app',
-					 '0.utf', '0.u']
+	                 'Umineko1to4.exe', 'Umineko1to4', 'Umineko1to4.app',
+	                 '0.utf', '0.u']
 
 	for pathToBackup in pathsToBackup:
 		fullFilePath = os.path.join(folderToBackup, pathToBackup)
@@ -767,11 +767,11 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 		if "voice_only" in modToInstall:
 			continueInstallation = messagebox.askyesno("Voice Only Warning",
-								   "We have detected you have run the 'Voice Only' installer before.\n\n" +
-								   "If you switching from 'full patch' to 'voice only', please quit the " +
-								   "installer and completely delete the game directory, then re-install the game\n\n" +
-								   "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
-								   "Continue the installation?")
+			                       "We have detected you have run the 'Voice Only' installer before.\n\n" +
+			                       "If you switching from 'full patch' to 'voice only', please quit the " +
+			                       "installer and completely delete the game directory, then re-install the game\n\n" +
+			                       "If you are just upgrading or continuing your voice only install, you can continue the installlation.\n\n" +
+			                       "Continue the installation?")
 
 			if not continueInstallation:
 				print("User cancelled install (Voice Only)")
@@ -782,8 +782,8 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 	# Wipe non-checksummed install files in the temp folder. Print if not a fresh install.
 	deleteAllInPathExceptSpecified([downloadTempDir, advDownloadTempDir],
-								   extensions=['7z', 'zip'],
-								   searchStrings=['graphic', 'voice'])
+	                               extensions=['7z', 'zip'],
+	                               searchStrings=['graphic', 'voice'])
 
 	# Backup/clear the .exe and script files
 	backupOrRemoveFiles(gamePath)
