@@ -807,7 +807,7 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 		# need to un-quarantine .app file on MAC
 		if IS_MAC:
-			subprocess.call(["xattr", "-d com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
+			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko1to4.app")])
 	else:
 		if modToInstall == "mod_voice_only":
 			uminekoDownload(downloadTempDir, url_list=gameInfo["files"]["voice_only"])
@@ -826,7 +826,7 @@ def installUmineko(gameInfo, modToInstall, gamePath, isQuestionArcs):
 
 		# need to un-quarantine .app file on MAC
 		if IS_MAC:
-			subprocess.call(["xattr", "-d com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
+			subprocess.call(["xattr", "-d", "com.apple.quarantine", os.path.join(gamePath, "Umineko5to8.app")])
 
 	# write batch file to let users launch game in debug mode
 	with open(os.path.join(gamePath, "Umineko1to4_DebugMode.bat"), 'w') as f:
