@@ -424,12 +424,13 @@ def findPossibleGamePathsWindows():
 		return []
 
 
-def findPossibleGamePaths():
+def findPossibleGamePaths(gameName):
 	"""
 	If supported, searches the computer for things that might be Higurashi games
-	Currently only does things on Mac OS
-	TODO: Find ways to search for games on other platforms
+	Currently only does things on Mac OS and Windows
+	TODO: Find ways to search for games on Linux
 
+	:param str gameName: The name of the game to search for (should be either "Higurashi" or "Umineko"), used to reduce the time spent searching on Mac OS
 	:return: A list of game paths that might be Higurashi games
 	:rtype: list[str]
 	"""
@@ -439,12 +440,22 @@ def findPossibleGamePaths():
 		allPossibleGamePaths.extend(findPossibleGamePathsWindows())
 
 	if IS_MAC:
-		allPossibleGamePaths.extend(
-			x for x in subprocess
-				.check_output(["mdfind", "kind:Application", "Higurashi"])
-				.decode("utf-8")
-				.split("\n") if x
-		)
+		# mdfind is kind of slow, don't run it more than we have to
+		if gameName == "Higurashi":
+			allPossibleGamePaths.extend(
+				x for x in subprocess
+					.check_output(["mdfind", "kind:Application", "Higurashi"])
+					.decode("utf-8")
+					.split("\n") if x
+			)
+		elif gameName == "Umineko":
+			for gamePath in subprocess.check_output(["mdfind", "kind:Application", "Umineko"]).decode("utf-8").split("\n"):
+				# GOG installer makes a `.app` that contains the actual game at `/Contents/Resources/game`
+				gogPath = path.join(gamePath, "Contents/Resources/game")
+				if path.exists(gogPath):
+					allPossibleGamePaths.append(gogPath)
+		else:
+			print("Warning: ran findPossibleGamePaths with an unknown game")
 
 	#if all methods fail, return empty list
 	return sorted(allPossibleGamePaths)
@@ -487,17 +498,6 @@ def getGameNameFromGamePath(gamePath, modList):
 			return mod["target"]
 	return None
 
-def findInstalledGames(modList):
-	"""
-	Find moddable games
-	Uses findPossibleGames and therefore will support finding games on the same platforms it does
-	TODO: consider removal of this function, since it's only called in one place.
-	:param list[dict] modList: The list of available mods
-	:return: A list of games that were found and moddable
-	:rtype: list[str]
-	"""
-	return [path for path in findPossibleGamePaths() if getGameNameFromGamePath(path, modList) is not None]
-
 def promptChoice(rootGUIWindow, choiceList, guiPrompt, canOther=False):
 	"""
 	Prompts the user to choose from a list
@@ -528,7 +528,7 @@ def printSupportedGames(modList):
 def main():
 	print("Getting latest mod info...")
 	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/higurashiInstallData.json")
-	foundGames = findInstalledGames(modList)
+	foundGames = [path for path in findPossibleGamePaths("Higurashi") if getGameNameFromGamePath(path, modList) is not None]
 
 	#gameToUse is the path to the game install directory, for example "C:\games\Steam\steamapps\common\Higurashi 02 - Watanagashi"
 	gameToUse = promptChoice(
@@ -866,7 +866,7 @@ def mainUmineko():
 	print("Getting latest mod info (Umineko)...")
 	modList = getModList("https://raw.githubusercontent.com/07th-mod/resources/master/uminekoInstallData.json")
 
-	gamePathList = [gamePath for gamePath in findPossibleGamePaths() if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
+	gamePathList = [gamePath for gamePath in findPossibleGamePaths("Umineko") if getUminekoGameInformationFromGamePath(modList, gamePath) is not None]
 	print("Detected {} game folders: {}".format(len(gamePathList), gamePathList))
 
 	userSelectedGamePath = promptChoice(
