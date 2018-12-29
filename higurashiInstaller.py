@@ -378,7 +378,7 @@ def getModList(jsonURL):
 		if version > JSON_VERSION:
 			print("Your installer is out of date.")
 			print("Please download the latest version of the installer and try again.")
-			print("\nYour installer is compatible with mod listings up to version " + str(JSON_VERSION) + " but the latest listing is version " + version)
+			print("\nYour installer is compatible with mod listings up to version " + str(JSON_VERSION) + " but the latest listing is version " + str(version))
 			exitWithError()
 	except KeyError:
 		print("Warning: The mod info listing is missing a version number.  Things might not work.")
