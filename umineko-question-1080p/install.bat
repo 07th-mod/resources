@@ -42,6 +42,7 @@ del ".\temp\*.aria2"
 del "temp\*.utf"
 del "temp\*.u"
 del "temp\Umineko-Update*"
+del "temp\UminekoChiru*"
 del "temp\Umineko1to4.exe"
 del "temp\Umineko5to8.exe"
 
@@ -72,6 +73,9 @@ echo Extracting Voices...
 
 echo Extracting Updates...
 .\temp\7za.exe x temp\Umineko-Update* -aoa -bsp1 || echo ERROR during updates extraction. Check the game files are not in use. && goto :installFailed
+
+echo Extracting ADV Updates...
+.\temp\7za.exe x temp\UminekoChiru* -aoa -bsp1 || echo ERROR during updates extraction. Check the game files are not in use. && goto :installFailed
 
 ::open the temp folder so users can delete/backup any temp install files
 echo Opening temp folder for user to clean-up manually...
