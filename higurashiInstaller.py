@@ -243,7 +243,8 @@ class Installer:
 
 		possibleSteamPaths = [
 			path.join(self.directory, "steam_api.dll"),
-			path.join(self.directory, "Contents/Plugins/CSteamworks.bundle")
+			path.join(self.directory, "Contents/Plugins/CSteamworks.bundle"),
+			path.join(self.directory, "libsteam_api.so")
 		]
 
 		self.isSteam = False
