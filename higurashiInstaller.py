@@ -241,10 +241,15 @@ class Installer:
 
 		self.assetsDir = path.join(self.dataDirectory, "StreamingAssets")
 
-		if path.exists(path.join(self.directory, "steam_api.dll")):
-			self.isSteam = True
-		else:
-			self.isSteam = False
+		possibleSteamPaths = [
+			path.join(self.directory, "steam_api.dll"),
+			path.join(self.directory, "Contents/Plugins/CSteamworks.bundle")
+		]
+
+		self.isSteam = False
+		for possibleSteamPath in possibleSteamPaths:
+			if path.exists(possibleSteamPath):
+				self.isSteam = True
 
 		self.downloadDir = info["name"] + "Download"
 
