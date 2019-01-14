@@ -86,13 +86,13 @@ IS_MAC = platform.system() == "Darwin"
 
 #query available executables. If any installation of executables is done in the python script, it must be done
 #before this executes
-ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "aria2c"], '-h')
+ARIA_EXECUTABLE = findWorkingExecutablePath(["./aria2c", "./.aria2c", "aria2c"], '-h')
 if ARIA_EXECUTABLE is None:
 	# TODO: automatically download and install dependencies
 	print("ERROR: aria2c executable not found (aria2c). Please install the dependencies for your platform.")
 	exitWithError()
 
-SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "7za", "./7z", "7z"], '-h')
+SEVEN_ZIP_EXECUTABLE = findWorkingExecutablePath(["./7za", "./.7za", "7za", "./7z", "7z"], '-h')
 if SEVEN_ZIP_EXECUTABLE is None:
 	# TODO: automatically download and install dependencies
 	print("ERROR: 7-zip executable not found (7za or 7z). Please install the dependencies for your platform.")
