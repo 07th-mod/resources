@@ -16,8 +16,8 @@ try:
 	from tkinter import messagebox
 except ImportError:
 	import Tkinter as tkinter
-	from Tkinter import tkFileDialog as filedialog
-	from Tkinter import tkMessageBox as messagebox
+	import tkFileDialog as filedialog
+	import tkMessageBox as messagebox
 	from Tkinter import Listbox
 
 # Python 2 Compatibility
