@@ -14,11 +14,15 @@ try:
 	from tkinter import filedialog
 	from tkinter import Listbox
 	from tkinter import messagebox
+	from tkinter import Checkbutton
+	from tkinter import IntVar
 except ImportError:
 	import Tkinter as tkinter
 	import tkFileDialog as filedialog
 	import tkMessageBox as messagebox
 	from Tkinter import Listbox
+	from Tkinter import CheckButton
+	from Tkinter import IntVar
 
 # Python 2 Compatibility
 try: input = raw_input
@@ -66,10 +70,18 @@ def findWorkingExecutablePath(executable_paths, flags):
 				pass
 
 	return None
+################################################## Global Variables#####################################################
 
 # The installer info version this installer is compatibile with
 # Increment it when you make breaking changes to the json files
 JSON_VERSION = 1
+
+# Global variable controlling use of IPV6, toggled by a checkbox in the GUI. By default, IPV6 is NOT used.
+class GlobalSettings:
+	def __init__(self):
+		self.USE_IPV6 = False
+
+GLOBAL_SETTINGS = GlobalSettings()
 
 ###################################### Executable detection and Installation ###########################################
 
@@ -120,6 +132,9 @@ def aria(downloadDir=None, inputFile=None, url=None):
 		'--follow-metalink=mem',  #always follow metalinks, for now
 		'--check-integrity=true', #check integrity when using metalink
 	]
+
+	if not GLOBAL_SETTINGS.USE_IPV6:
+		arguments.append('--disable-ipv6=true')
 
 	#Add an extra command line argument if the function argument has been provided
 	if downloadDir:
@@ -935,6 +950,7 @@ def check07thModServerConnection():
 
 check07thModServerConnection()
 
+
 rootWindow = tkinter.Tk()
 
 def closeAndStartHigurashi():
@@ -951,11 +967,23 @@ def closeAndStartUmineko():
 	messagebox.showinfo("Install Completed", installFinishedMessage)
 	rootWindow.destroy()
 
+
+
 # Add an 'OK' button. When pressed, the dialog is closed
 defaultPadding = {"padx": 20, "pady": 10}
 b = tkinter.Button(rootWindow, text="Install Higurashi Mods", command=closeAndStartHigurashi)
 b.pack(**defaultPadding)
 b = tkinter.Button(rootWindow, text="Install Umineko Mods", command=closeAndStartUmineko)
 b.pack(**defaultPadding)
+
+tkinter.Label(rootWindow, text="Advanced Settings").pack()
+
+# Add a checkbox to enable/disable IPV6. IPV6 is disabled by default due to some
+# installations failing when IPV6 is used due to misconfigured routers/other problems.
+use_ipv6_var = IntVar()
+def onIPV6CheckboxToggled():
+	GLOBAL_SETTINGS.USE_IPV6 = use_ipv6_var.get()
+c = Checkbutton(rootWindow, text="Enable IPv6", var=use_ipv6_var, command=onIPV6CheckboxToggled)
+c.pack()
 
 rootWindow.mainloop()
