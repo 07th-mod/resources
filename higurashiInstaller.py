@@ -21,7 +21,7 @@ except ImportError:
 	import tkFileDialog as filedialog
 	import tkMessageBox as messagebox
 	from Tkinter import Listbox
-	from Tkinter import Checkbutton as CheckButton
+	from Tkinter import Checkbutton
 	from Tkinter import IntVar
 
 # Python 2 Compatibility
