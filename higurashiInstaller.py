@@ -158,10 +158,12 @@ def sevenZipExtract(archive_path, outputDir=None):
 # see http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
 class ListChooserDialog:
 
-	def __init__(self, parent, listEntries, guiPrompt, allowManualFolderSelection):
+	def __init__(self, parent, listEntries, guiPrompt, allowManualFolderSelection, forceFolderOnlyChoosing=False):
 		"""
 		NOTE: do not call this constructor directly. Use the ListChooserDialog.showDialog function instead.
 		"""
+		self.forceFolderOnlyChoosing = forceFolderOnlyChoosing
+
 		self.top = tkinter.Toplevel(parent)
 		defaultPadding = {"padx":20, "pady":10}
 
@@ -201,7 +203,7 @@ class ListChooserDialog:
 		self.result = None
 
 	def showDirectoryChooser(self):
-		if IS_MAC:
+		if IS_MAC and not self.forceFolderOnlyChoosing:
 			self.result = filedialog.askopenfilename(filetypes=[(None, "com.apple.application")])
 		else:
 			self.result = filedialog.askdirectory()
@@ -224,7 +226,7 @@ class ListChooserDialog:
 		self.top.destroy()
 
 	@staticmethod
-	def showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection):
+	def showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection, forceFolderOnlyChoosing=False):
 		"""
 		Static helper function to show dialog and get a return value. Arguments are the same as constructor
 		:param rootGUIWindow: the parent tkinter object of the dialog (can be root window)
@@ -233,7 +235,7 @@ class ListChooserDialog:
 		:param allowManualFolderSelection: if true, user is allowed to select a folder manually.
 		:return: returns the value the user selected (string), or None if none available
 		"""
-		d = ListChooserDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection)
+		d = ListChooserDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection, forceFolderOnlyChoosing)
 		rootGUIWindow.wait_window(d.top)
 		return d.result
 
@@ -519,7 +521,7 @@ def getGameNameFromGamePath(gamePath, modList):
 			return mod["target"]
 	return None
 
-def promptChoice(rootGUIWindow, choiceList, guiPrompt, canOther=False):
+def promptChoice(rootGUIWindow, choiceList, guiPrompt, canOther=False, forceFolderOnlyChoosing=False):
 	"""
 	Prompts the user to choose from a list
 	:param list[str] choiceList: The list of choices
@@ -530,7 +532,7 @@ def promptChoice(rootGUIWindow, choiceList, guiPrompt, canOther=False):
 	:return: The string that the user selected, or if canOther is true, possibly a path that was not in the option list
 	:rtype: str
 	"""
-	result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther)
+	result = ListChooserDialog.showDialog(rootGUIWindow, choiceList, guiPrompt, allowManualFolderSelection=canOther, forceFolderOnlyChoosing=forceFolderOnlyChoosing)
 	if not result:
 		exitWithError()
 
@@ -904,7 +906,8 @@ def mainUmineko():
 		rootGUIWindow=rootWindow,
 		choiceList= gamePathList,
 		guiPrompt="Please choose a game to mod",
-		canOther=True
+		canOther=True,
+		forceFolderOnlyChoosing=True,
 	)
 
 	print("Selected game folder: [{}]".format(userSelectedGamePath))
