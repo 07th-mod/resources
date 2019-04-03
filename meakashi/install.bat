@@ -22,6 +22,13 @@ echo Preparing files...
 echo.
 del .\HigurashiEp05_Data\StreamingAssets\CompiledUpdateScripts\*.mg
 
+if exist .\HigurashiEp05_Data\sharedassets0.assets.backup (
+    goto skip
+) else (
+    ren .\HigurashiEp05_Data\sharedassets0.assets sharedassets0.assets.backup
+    ren .\HigurashiEp05_Data\sharedassets0.assets.resS sharedassets0.assets.resS.backup
+)
+
 :skip
 rmdir /S /Q .\HigurashiEp05_Data\StreamingAssets\CG
 rmdir /S /Q .\HigurashiEp05_Data\StreamingAssets\CGAlt
@@ -32,7 +39,7 @@ echo.
 .\temp\7za.exe x *-CG.7z -aoa
 .\temp\7za.exe x *-Voices.7z -aoa
 .\temp\7za.exe x *.Voice.and.Graphics.Patch.*.zip -aoa
-REM .\temp\7za.exe x *-UI.7z -aoa
+.\temp\7za.exe x *-UI.7z -aoa
 .\temp\7za.exe x *-Movie.7z -aoa
 
 echo All done, finishing in three seconds...
