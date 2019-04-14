@@ -13,7 +13,11 @@ echo.
 if exist .\steam_api.dll (
     .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tatarigoroshi-UI.7z
 ) else (
-    .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tatarigoroshi-UI_MG.7z
+    if exist .\gog.ico (
+        .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tatarigoroshi-UI.7z
+    ) else (
+        .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Tatarigoroshi-UI_MG.7z
+    )
 )
 
 echo Downloading voice patch... (2 of 3)
