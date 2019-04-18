@@ -7,8 +7,13 @@ cd ..
 echo Downloading graphics patch... (1 of 3)
 .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-CG.7z
 .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-CGAlt.7z
-.\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-UI.7z
 .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-Movie.7z
+
+if exist .\gog.ico (
+    .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-UI_GOG.7z
+) else (
+    .\temp\aria2c.exe --file-allocation=none --continue=true --retry-wait 5 -m 0 -x 8 -s 8 https://07th-mod.com/rikachama/Meakashi-UI.7z
+)
 
 echo Downloading voice patch... (2 of 3)
 echo.
@@ -39,7 +44,7 @@ echo.
 .\temp\7za.exe x *-CG.7z -aoa
 .\temp\7za.exe x *-Voices.7z -aoa
 .\temp\7za.exe x *.Voice.and.Graphics.Patch.*.zip -aoa
-.\temp\7za.exe x *-UI.7z -aoa
+.\temp\7za.exe x *-UI*.7z -aoa
 .\temp\7za.exe x *-Movie.7z -aoa
 
 echo All done, finishing in three seconds...
